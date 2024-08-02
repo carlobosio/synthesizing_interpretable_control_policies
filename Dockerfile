@@ -12,5 +12,8 @@ COPY examples ./examples
 COPY funsearch ./funsearch
 
 RUN pip install --no-deps . && rm -r ./funsearch ./build
+RUN apt-get install curl
+# RUN curl https://ollama.ai/install.sh | sh
+RUN llm install llm-ollama
 
 CMD /bin/bash

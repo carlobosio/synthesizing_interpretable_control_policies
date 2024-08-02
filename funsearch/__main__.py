@@ -7,6 +7,7 @@ import time
 
 import click
 import llm
+# import ollama
 from dotenv import load_dotenv
 
 
@@ -58,7 +59,8 @@ def main(ctx):
 @main.command()
 @click.argument("spec_file", type=click.File("r"))
 @click.argument('inputs')
-@click.option('--model_name', default="gpt-3.5-turbo-instruct", help='LLM model')
+# @click.option('--model_name', default="gpt-3.5-turbo-instruct", help='LLM model')
+@click.option('--model_name', default="neural-chat", help='LLM model')
 @click.option('--output_path', default="./data/", type=click.Path(file_okay=False), help='path for logs and data')
 @click.option('--load_backup', default=None, type=click.File("rb"), help='Use existing program database')
 @click.option('--iterations', default=-1, type=click.INT, help='Max iterations per sampler')
@@ -95,7 +97,7 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
     logging.info(f"Writing logs to {log_path}")
 
   model = llm.get_model(model_name)
-  model.key = model.get_key()
+  # model.key = model.get_key()
   lm = sampler.LLM(2, model, log_path)
 
   specification = spec_file.read()

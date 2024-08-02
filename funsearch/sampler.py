@@ -26,7 +26,7 @@ from funsearch import programs_database
 class LLM:
   """Language model that predicts continuation of provided source code."""
 
-  def __init__(self, samples_per_prompt: int, model: llm.Model, log_path=None) -> None:
+  def __init__(self, samples_per_prompt: int, model: llm.Model, log_path=None) -> None: # samples_per_prompt is 2 (number of times the same prompt is used)
     self._samples_per_prompt = samples_per_prompt
     self.model = model
     self.prompt_count = 0
@@ -40,7 +40,7 @@ class LLM:
     return response
 
   def draw_samples(self, prompt: str) -> Collection[str]:
-    """Returns multiple predicted continuations of `prompt`."""
+    """Returns multiple predicted continuations of `prompt`.""" # (2)
     return [self._draw_sample(prompt) for _ in range(self._samples_per_prompt)]
 
   def _log(self, prompt: str, response: str, index: int):

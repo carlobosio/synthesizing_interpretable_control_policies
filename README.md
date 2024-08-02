@@ -13,12 +13,17 @@ podman build . -t funsearch
 # Create a folder to share with the container
 mkdir data
 podman run -it -v ./data:/workspace/data funsearch
+# [carlo] to run giving access to host's gpus
+docker run --gpus all -it -v ./data:/workspace/data funsearch
+# [carlo] run this to also access host's network (so we don't have to install the llm in docker container, so also no need to give access to gpu)
+docker run --network host -it -v ./data:/workspace/data funsearch
 
 # Set the environment variable OPENAI_API_KEY=sk-xxxx or create .env file.
 # "gpt-3.5-turbo-instruct" model is used by default.
 # Refer to 'llm' package docs to use other models.
 
 funsearch run examples/cap_set_spec.py 11 --sandbox_type ExternalProcessSandbox
+
 ```
 In here we are searching for the algorithm to find maximum cap sets for dimension 11.
 You should see output something like
