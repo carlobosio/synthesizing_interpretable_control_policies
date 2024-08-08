@@ -77,11 +77,13 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
 \b
   INPUTS    input filename ending in .json or .pickle, or a comma-separated
             input data. The files are expected contain a list with at least
-            one element. Elements shall be passed to the solve() method
+            one element. Elements shall be **passed to the solve() method**
             one by one. Examples
               8
               8,9,10
               ./examples/cap_set_input_data.json
+            [carlo] in the cap set case it is an int representing the 
+              dimension of the space where we are looking for a cap set
 """
 
   # Load environment variables from .env file.

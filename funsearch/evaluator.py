@@ -30,9 +30,14 @@ from funsearch import sandbox
   - a new 'def'
   - ` or ' or # without indentation
 """
-METHOD_MATCHER = re.compile(r"def priority_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
-METHOD_NAME_MATCHER = re.compile(r"priority_v\d+")
+# METHOD_MATCHER = re.compile(r"def priority_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+# METHOD_NAME_MATCHER = re.compile(r"priority_v\d+")
+# method_str = "def priority_v"
 
+# [carlo] trying to change this to solve inverted pendulum
+METHOD_MATCHER = re.compile(r"def controller_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+METHOD_NAME_MATCHER = re.compile(r"controller_v\d+")
+method_str = "def controller_v"
 
 class _FunctionLineVisitor(ast.NodeVisitor):
   """Visitor that finds the last line number of a function with a given name."""
@@ -55,7 +60,7 @@ class _FunctionLineVisitor(ast.NodeVisitor):
 
 
 def _find_method_implementation(generated_code: str) -> Tuple[str, str]:
-  """Find the last 'def priority_vX()' method from generated code.
+  """Find the last method specified in METHOD_MATCHER within generated code.
 
   Return the code and the name of the method.
   """
@@ -76,7 +81,7 @@ def _trim_function_body(generated_code: str) -> str:
 
   method_name = "fake_function_header"
   # Check is the response only a continuation for our prompt or full method implementation with header
-  if "def priority_v" in generated_code:
+  if method_str in generated_code:
     code, method_name = _find_method_implementation(generated_code)
   else:
     code = f'def {method_name}():\n{generated_code}'

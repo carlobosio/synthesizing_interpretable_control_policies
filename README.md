@@ -17,6 +17,8 @@ podman run -it -v ./data:/workspace/data funsearch
 docker run --gpus all -it -v ./data:/workspace/data funsearch
 # [carlo] run this to also access host's network (so we don't have to install the llm in docker container, so also no need to give access to gpu)
 docker run --network host -it -v ./data:/workspace/data funsearch
+# [carlo] if from server
+docker run --network host -it -v /home/cbosio/fun-design/data:/workspace/data funsearch
 
 # Set the environment variable OPENAI_API_KEY=sk-xxxx or create .env file.
 # "gpt-3.5-turbo-instruct" model is used by default.
