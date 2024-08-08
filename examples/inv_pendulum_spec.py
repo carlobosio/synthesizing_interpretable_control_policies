@@ -44,6 +44,7 @@ def simulate(state: np.ndarray, control_input: float, sampling_time: float) -> n
 
 @funsearch.evolve
 def controller(state: np.ndarray) -> float:
-  """Returns a control input for the inverted pendulum.
+  """Returns a control input for the inverted pendulum. state is a 2D array contaning angle and angular velocity.
+  The function is going to return a float torque value.
   """
   return 0.0
