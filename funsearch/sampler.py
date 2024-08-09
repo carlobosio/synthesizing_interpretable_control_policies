@@ -45,7 +45,7 @@ class LLM:
 
   def _log(self, prompt: str, response: str, index: int):
     if self.log_path is not None:
-      with open(self.log_path / f"prompt_{index}.log", "a") as f:
+      with open(self.log_path / f"prompt_{index}.log", "a") as f: # saves the prompt in file
         f.write(prompt)
       with open(self.log_path / f"response_{index}.log", "a") as f:
         f.write(str(response))
