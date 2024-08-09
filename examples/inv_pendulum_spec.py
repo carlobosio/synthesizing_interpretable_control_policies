@@ -1,4 +1,4 @@
-"""Finds a controller to stabilize the inverted pendulum.
+"""Finds a controller to stabilize a two dimensional nonlinear system.
 
 On every iteration, improve controller_v1 over the controller_vX methods from previous iterations.
 Make only small changes.
@@ -33,7 +33,7 @@ def solve(init_angle) -> float:
   return rmse_sum / horizon_length
 
 def simulate(state: np.ndarray, control_input: float, sampling_time: float) -> np.ndarray:
-  """Simulates a step of the inverted pendulum.
+  """Simulates a step.
   """
   next_state = state.copy()
   next_state[0] += state[1] * sampling_time
@@ -44,7 +44,7 @@ def simulate(state: np.ndarray, control_input: float, sampling_time: float) -> n
 
 @funsearch.evolve
 def controller(state: np.ndarray) -> float:
-  """Returns a control input for the inverted pendulum. state is a 2D array contaning angle and angular velocity.
-  The function is going to return a float torque value.
+  """Returns a control input. state is a 2D array contaning x and x_dot.
+  The function is going to return a float input value.
   """
   return 0.0
