@@ -1,8 +1,8 @@
-"""Finds a controller to stabilize a two dimensional nonlinear system.
+"""Finds a control policy to stabilize a two dimensional nonlinear system.
 
 On every iteration, improve controller_v1 over the controller_vX methods from previous iterations.
 Make only small changes.
-Try to make the code short.
+Try to make the code short and be creative with the method you use.
 """
 
 import numpy as np
@@ -14,6 +14,7 @@ import funsearch
 def evaluate(init_angle) -> float:
   """Returns the negative rmse score for a controller."""
   rmse_value = solve(init_angle)
+  print(f"[solve] output rmse: {rmse_value}")
   return -rmse_value
 
 
@@ -29,7 +30,7 @@ def solve(init_angle) -> float:
     control_input = controller(state)
     state = simulate(state, control_input, sampling_time)
     rmse_sum += np.linalg.norm(state)
-
+  
   return rmse_sum / horizon_length
 
 def simulate(state: np.ndarray, control_input: float, sampling_time: float) -> np.ndarray:
