@@ -29,6 +29,12 @@ funsearch run examples/cap_set_spec.py 11 --sandbox_type ExternalProcessSandbox
 # [carlo] to run the inverted pendulum example
 funsearch run examples/inv_pendulum_spec.py 0.6 --sandbox_type ExternalProcessSandbox
 
+# [carlo] to debug on local
+# remember to uncomment the lines that start debugpy in the Dockerfile
+docker build -t funsearch .
+docker run --network host -v ./data:/workspace/data funsearch
+# then press play on the debugger to launch the attach configuration on launch.json
+
 ```
 In here we are searching for the algorithm to find maximum cap sets for dimension 11.
 You should see output something like
