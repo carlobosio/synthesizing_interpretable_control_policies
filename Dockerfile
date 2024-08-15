@@ -11,9 +11,13 @@ RUN pdm install  --no-self
 COPY examples ./examples
 COPY funsearch ./funsearch
 
-RUN pip install --no-deps . && rm -r ./funsearch ./build
-RUN apt-get install curl
-# RUN curl https://ollama.ai/install.sh | sh
+RUN pip install --no-deps . 
 RUN llm install llm-ollama
 
+# if running the container
+RUN rm -r ./funsearch ./build
 CMD /bin/bash
+
+# if debugging
+# RUN pip install debugpy
+# CMD ["python", "-Xfrozen_modules=off", "-m", "debugpy", "--listen", "0.0.0.0:5678", "--wait-for-client", "funsearch", "run", "examples/inv_pendulum_spec.py", "0.6", "--sandbox_type", "ExternalProcessSandbox"]
