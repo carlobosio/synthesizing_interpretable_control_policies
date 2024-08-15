@@ -35,8 +35,8 @@ from funsearch import sandbox
 # method_str = "def priority_v"
 
 # [carlo] trying to change this to solve inverted pendulum
-METHOD_MATCHER = re.compile(r"def controller_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
-METHOD_NAME_MATCHER = re.compile(r"controller_v\d+")
+METHOD_MATCHER = re.compile(r"def policy_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+METHOD_NAME_MATCHER = re.compile(r"policy_v\d+")
 method_str = "def controller_v"
 
 class _FunctionLineVisitor(ast.NodeVisitor):
