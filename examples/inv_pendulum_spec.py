@@ -38,6 +38,7 @@ def simulate(state: np.ndarray, control_input: float, sampling_time: float) -> n
   """
   next_state = state.copy()
   next_state[0] += state[1] * sampling_time
+  print("ctrl type: ", type(control_input))
   next_state[1] += (np.sin(state[0]) - state[1] + control_input) * sampling_time
 
   return next_state

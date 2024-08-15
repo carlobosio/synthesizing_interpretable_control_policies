@@ -37,7 +37,7 @@ from funsearch import sandbox
 # [carlo] trying to change this to solve inverted pendulum
 METHOD_MATCHER = re.compile(r"def policy_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
 METHOD_NAME_MATCHER = re.compile(r"policy_v\d+")
-method_str = "def controller_v"
+method_str = "def policy_v"
 
 class _FunctionLineVisitor(ast.NodeVisitor):
   """Visitor that finds the last line number of a function with a given name."""
