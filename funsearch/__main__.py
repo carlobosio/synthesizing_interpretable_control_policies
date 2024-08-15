@@ -1,5 +1,6 @@
 import json
 import logging
+logging.getLogger("httpx").disabled = True
 import os
 import pathlib
 import pickle
