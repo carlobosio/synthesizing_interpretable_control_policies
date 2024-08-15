@@ -9,6 +9,13 @@ import click
 import llm
 # import ollama
 from dotenv import load_dotenv
+# import debugpy
+
+# # Allow other machines to attach to debugpy at port 5678
+# debugpy.listen(("0.0.0.0", 5678))
+# print("Waiting for debugger attach...")
+# debugpy.wait_for_client()  # Pause the program until a debugger attaches
+# print("Debugger attached. Continuing execution.")
 
 
 from funsearch import config, core, sandbox, sampler, programs_database, code_manipulation, evaluator
@@ -60,7 +67,7 @@ def main(ctx):
 @click.argument("spec_file", type=click.File("r"))
 @click.argument('inputs')
 # @click.option('--model_name', default="gpt-3.5-turbo-instruct", help='LLM model')
-# @click.option('--model_name', default="neural-chat", help='LLM model')
+# @click.option('--model_name', default="deepseek-coder", help='LLM model')
 @click.option('--model_name', default="starcoder2:15b-instruct-v0.1-q8_0", help='LLM model')
 @click.option('--output_path', default="./data/", type=click.Path(file_okay=False), help='path for logs and data')
 @click.option('--load_backup', default=None, type=click.File("rb"), help='Use existing program database')
@@ -109,7 +116,7 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
 
   conf = config.Config(num_evaluators=1)
   database = programs_database.ProgramsDatabase(
-    conf.programs_database, template, function_to_evolve, identifier=timestamp)
+    conf.programs_database, template, function_to_evolve, identifier=timestamp, log_path=log_path)
   if load_backup:
     database.load(load_backup)
 

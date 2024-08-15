@@ -83,10 +83,12 @@ class ProgramsDatabase:
       template: code_manipulation.Program,
       function_to_evolve: str,
       identifier: str = "",
+      log_path=None
   ) -> None:
     self._config: config_lib.ProgramsDatabaseConfig = config
     self._template: code_manipulation.Program = template
     self._function_to_evolve: str = function_to_evolve
+    self.log_path = log_path
 
     # Initialize empty islands.
     self._islands: list[Island] = []
@@ -156,6 +158,9 @@ class ProgramsDatabase:
       self._best_scores_per_test_per_island[island_id] = scores_per_test
       self._best_score_per_island[island_id] = score
       logging.info('Best score of island %d increased to %s', island_id, score)
+      # Save the best program to a file.
+      with open(self.log_path / f'best_program_{island_id}.py', 'w') as f:
+        f.write(str(program)) 
 
   def register_program(
       self,

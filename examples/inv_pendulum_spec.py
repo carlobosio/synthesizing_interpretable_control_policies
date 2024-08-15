@@ -1,6 +1,6 @@
 """Finds a control policy to stabilize a two dimensional nonlinear system.
 
-On every iteration, improve controller_v1 over the controller_vX methods from previous iterations.
+On every iteration, improve policy_v1 over the policy_vX methods from previous iterations.
 Make only small changes.
 Try to make the code short and be creative with the method you use.
 """
@@ -12,10 +12,10 @@ import funsearch
 
 @funsearch.run
 def evaluate(init_angle) -> float:
-  """Returns the negative rmse score for a controller."""
+  """Returns the negative rmse score for a policy."""
   rmse_value = solve(init_angle)
-  print(f"[solve] output rmse: {rmse_value}")
-  return -rmse_value
+  print(f"[run] output rmse: {rmse_value}")
+  return -np.log(rmse_value)
 
 
 def solve(init_angle) -> float:
@@ -27,7 +27,7 @@ def solve(init_angle) -> float:
   rmse_sum = 0.0
 
   for _ in range(horizon_length):
-    control_input = controller(state)
+    control_input = policy(state)
     state = simulate(state, control_input, sampling_time)
     rmse_sum += np.linalg.norm(state)
   
@@ -44,7 +44,7 @@ def simulate(state: np.ndarray, control_input: float, sampling_time: float) -> n
 
 
 @funsearch.evolve
-def controller(state: np.ndarray) -> float:
+def policy(state: np.ndarray) -> float:
   """Returns a control input. state is a 2D array contaning x and x_dot.
   The function is going to return a float input value.
   """
