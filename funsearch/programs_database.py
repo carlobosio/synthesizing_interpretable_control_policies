@@ -260,7 +260,7 @@ class Island:
     period = self._cluster_sampling_temperature_period
     temperature = self._cluster_sampling_temperature_init * (
         1 - (self._num_programs % period) / period)
-    print("Softmax in get_prompt")
+    print("Softmax in get_prompt, cluster scores: ", cluster_scores)
     probabilities = _softmax(cluster_scores, temperature)
 
     # At the beginning of an experiment when we have few clusters, place fewer
@@ -275,6 +275,7 @@ class Island:
     for signature in chosen_signatures:
       cluster = self._clusters[signature]
       implementations.append(cluster.sample_program())
+      print("appending cluster score: ", cluster.score)
       scores.append(cluster.score)
 
     indices = np.argsort(scores)
@@ -342,6 +343,6 @@ class Cluster:
     """Samples a program, giving higher probability to shorther programs."""
     normalized_lengths = (np.array(self._lengths) - min(self._lengths)) / (
         max(self._lengths) + 1e-6)
-    print("Softmax in sample_program")
+    # print("Softmax in sample_program")
     probabilities = _softmax(-normalized_lengths, temperature=1.0)
     return np.random.choice(self._programs, p=probabilities)

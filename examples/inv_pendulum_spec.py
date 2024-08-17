@@ -15,7 +15,7 @@ def evaluate(init_angle) -> float:
   """Returns the negative rmse score for a policy."""
   rmse_value = solve(init_angle)
   print(f"[run] output rmse: {rmse_value}")
-  return -np.log(rmse_value)
+  return float(-np.log(rmse_value))
 
 
 def solve(init_angle) -> float:
