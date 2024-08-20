@@ -15,6 +15,8 @@ def evaluate(init_angle) -> float:
   """Returns the negative rmse score for a policy."""
   rmse_value = solve(init_angle)
   print(f"[run] output rmse: {rmse_value}")
+  if np.isnan(rmse_value):
+    raise ValueError("RMSE value is NaN.")
   return float(-np.log(rmse_value))
 
 
