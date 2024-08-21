@@ -18,7 +18,7 @@ def evaluate(init_angle) -> float:
   if np.isfinite(rmse_value):
     return float(-np.log(rmse_value))
   else:
-    print(f"[run] output rmse is not finite: {rmse_value}")
+    # print(f"[run] output rmse is not finite: {rmse_value}")
     return -100.0
 
 

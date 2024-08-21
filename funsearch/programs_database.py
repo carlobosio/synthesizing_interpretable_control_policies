@@ -261,7 +261,7 @@ class Island:
     period = self._cluster_sampling_temperature_period
     temperature = self._cluster_sampling_temperature_init * (
         1 - (self._num_programs % period) / period)
-    print("Softmax in get_prompt, cluster scores: ", cluster_scores)
+    # print("Softmax in get_prompt, cluster scores: ", cluster_scores)
     probabilities = _softmax(cluster_scores, temperature)
 
     # At the beginning of an experiment when we have few clusters, place fewer
