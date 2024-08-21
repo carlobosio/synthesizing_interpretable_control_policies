@@ -14,10 +14,12 @@ import funsearch
 def evaluate(init_angle) -> float:
   """Returns the negative rmse score for a policy."""
   rmse_value = solve(init_angle)
-  print(f"[run] output rmse: {rmse_value}")
-  if np.isnan(rmse_value):
-    raise ValueError("RMSE value is NaN.")
-  return float(-np.log(rmse_value))
+  # print(f"[run] output rmse: {rmse_value}")
+  if np.isfinite(rmse_value):
+    return float(-np.log(rmse_value))
+  else:
+    print(f"[run] output rmse is not finite: {rmse_value}")
+    return -100.0
 
 
 def solve(init_angle) -> float:
