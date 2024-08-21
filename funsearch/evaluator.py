@@ -169,7 +169,7 @@ class Evaluator:
         sample, version_generated, self._template, self._function_to_evolve)
 
     scores_per_test = {}
-    for current_input in self._inputs:
+    for current_input in self._inputs:            # runs the function on all inputs provided in the launch command
       test_output, runs_ok = self._sandbox.run(
           program, self._function_to_run, current_input, self._timeout_seconds)
       if (runs_ok and not _calls_ancestor(program, self._function_to_evolve)
