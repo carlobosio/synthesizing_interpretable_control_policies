@@ -183,6 +183,7 @@ class ProgramsDatabase:
     # Check whether it is time to reset an island.
     if (time.time() - self._last_reset_time > self._config.reset_period):
       self._last_reset_time = time.time()
+      print("Resetting islands")
       self.reset_islands()
 
     # Backup every N iterations
@@ -275,7 +276,6 @@ class Island:
     for signature in chosen_signatures:
       cluster = self._clusters[signature]
       implementations.append(cluster.sample_program())
-      print("appending cluster score: ", cluster.score)
       scores.append(cluster.score)
 
     indices = np.argsort(scores)
