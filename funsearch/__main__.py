@@ -115,7 +115,7 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
   function_to_evolve, function_to_run = core._extract_function_names(specification)
   template = code_manipulation.text_to_program(specification)
 
-  conf = config.Config(num_evaluators=1)
+  conf = config.Config(num_evaluators=2)
   database = programs_database.ProgramsDatabase(
     conf.programs_database, template, function_to_evolve, identifier=timestamp, log_path=log_path)
   if load_backup:
@@ -149,7 +149,7 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
 @click.argument("db_file", type=click.File("rb"))
 def ls(db_file):
   """List programs from a stored database (usually in data/backups/ )"""
-  conf = config.Config(num_evaluators=1)
+  conf = config.Config(num_evaluators=2)
 
   # A bit silly way to list programs. This probably does not work if config has changed any way
   database = programs_database.ProgramsDatabase(
