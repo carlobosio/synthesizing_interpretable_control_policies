@@ -28,6 +28,7 @@ funsearch run examples/cap_set_spec.py 11 --sandbox_type ExternalProcessSandbox
 
 # [carlo] to run the inverted pendulum example
 funsearch run examples/inv_pendulum_spec.py 0.6 --sandbox_type ExternalProcessSandbox
+funsearch run examples/inv_pendulum_spec_2.py 0.6 --sandbox_type ExternalProcessSandbox
 
 # [carlo] to debug on local
 # remember to uncomment the lines that start debugpy inside the Dockerfile
