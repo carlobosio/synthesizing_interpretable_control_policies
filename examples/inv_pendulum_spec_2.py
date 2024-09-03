@@ -1,8 +1,7 @@
-"""Finds a function of two variables for the task.
+"""Finds a heuristics function for the task to solve.
 
 On every iteration, improve function_v1 over the function_vX methods from previous iterations.
 Make only small changes.
-Try to make the code short and be creative with the method you use.
 """
 
 import numpy as np
