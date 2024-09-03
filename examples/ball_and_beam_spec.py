@@ -33,7 +33,7 @@ def solve(init_pos) -> float:
   rmse_sum = 0.0
 
   for _ in range(horizon_length):
-    control_input = policy(state)
+    control_input = heuristic(state)
     state = simulate(state, control_input, sampling_time)
     rmse_sum += np.linalg.norm(state)
   
