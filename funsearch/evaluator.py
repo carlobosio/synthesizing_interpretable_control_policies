@@ -39,10 +39,14 @@ from funsearch import sandbox
 # METHOD_NAME_MATCHER = re.compile(r"policy_v\d+")
 # method_str = "def policy_v"
 
+METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+METHOD_NAME_MATCHER = re.compile(r"heuristic_v\d+")
+method_str = "def heuristic_v"
+
 # [carlo] solve inverted pendulum with reduced context 
-METHOD_MATCHER = re.compile(r"def function_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
-METHOD_NAME_MATCHER = re.compile(r"function_v\d+")
-method_str = "def function_v"
+# METHOD_MATCHER = re.compile(r"def function_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+# METHOD_NAME_MATCHER = re.compile(r"function_v\d+")
+# method_str = "def function_v"
 
 class _FunctionLineVisitor(ast.NodeVisitor):
   """Visitor that finds the last line number of a function with a given name."""
