@@ -1,7 +1,7 @@
-"""Finds a control policy for a four dimensional non feedback-linearizable system.
+"""Finds a control heuristic for a four dimensional non feedback-linearizable system.
 
-On every iteration, improve policy_v1 over the policy_vX methods from previous iterations.
-Make only small changes.
+On every iteration, improve heuristic_v1 over the heuristic_vX methods from previous iterations.
+Make only small changes. Try to make the code short.
 """
 
 import numpy as np
@@ -11,7 +11,7 @@ import funsearch
 
 @funsearch.run
 def evaluate(init_pos) -> float:
-  """Returns the negative rmse score for a policy."""
+  """Returns the negative rmse score for a heuristic."""
   rmse_value = solve(init_pos)
   # print(f"[run] output rmse: {rmse_value}")
   if np.isfinite(rmse_value):
