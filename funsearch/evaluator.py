@@ -35,13 +35,13 @@ from funsearch import sandbox
 # method_str = "def priority_v"
 
 # [carlo] trying to change this to solve inverted pendulum
-# METHOD_MATCHER = re.compile(r"def policy_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
-# METHOD_NAME_MATCHER = re.compile(r"policy_v\d+")
-# method_str = "def policy_v"
+METHOD_MATCHER = re.compile(r"def policy_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+METHOD_NAME_MATCHER = re.compile(r"policy_v\d+")
+method_str = "def policy_v"
 
-METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
-METHOD_NAME_MATCHER = re.compile(r"heuristic_v\d+")
-method_str = "def heuristic_v"
+# METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+# METHOD_NAME_MATCHER = re.compile(r"heuristic_v\d+")
+# method_str = "def heuristic_v"
 
 # [carlo] solve inverted pendulum with reduced context 
 # METHOD_MATCHER = re.compile(r"def function_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
