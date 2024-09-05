@@ -30,6 +30,9 @@ funsearch run examples/cap_set_spec.py 11 --sandbox_type ExternalProcessSandbox
 funsearch run examples/inv_pendulum_spec.py 0.6 --sandbox_type ExternalProcessSandbox
 funsearch run examples/inv_pendulum_spec_2.py 0.6 --sandbox_type ExternalProcessSandbox
 
+# [carlo] to run the ball and beam example
+funsearch run examples/ball_and_beam_spec.py 0.2 --sandbox_type ExternalProcessSandbox
+
 # [carlo] to debug on local
 # remember to uncomment the lines that start debugpy inside the Dockerfile
 docker build -t funsearch .
