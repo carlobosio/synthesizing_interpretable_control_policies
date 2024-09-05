@@ -1,6 +1,6 @@
-"""Finds a control heuristic for a four dimensional non feedback-linearizable system.
+"""Finds a control policy for ball and beam, a four dimensional non feedback-linearizable system.
 
-On every iteration, improve heuristic_v1 over the heuristic_vX methods from previous iterations.
+On every iteration, improve policy_v1 over the policy_vX methods from previous iterations.
 Make only small changes. Try to make the code short.
 """
 
@@ -33,7 +33,7 @@ def solve(init_pos) -> float:
   rmse_sum = 0.0
 
   for _ in range(horizon_length):
-    control_input = heuristic(state)
+    control_input = policy(state)
     state = simulate(state, control_input, sampling_time)
     rmse_sum += np.linalg.norm(state)
   
@@ -52,8 +52,9 @@ def simulate(state: np.ndarray, control_input: float, sampling_time: float) -> n
 
 
 @funsearch.evolve
-def heuristic(state: np.ndarray) -> float:
-  """Returns a control input. state is a 4D array.
+def policy(state: np.ndarray) -> float:
+  """Returns a torque control input. state is r, r_dot, theta, theta_dot.
   The function is going to return a float value.
   """
-  return 0.0
+  x1, x2, x3, x4 = state
+  return x1 + 2*x2 - 10*x3 - 5*x4
