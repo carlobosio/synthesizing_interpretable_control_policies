@@ -1,7 +1,7 @@
-"""Finds a control policy for ball and beam, a four dimensional non feedback-linearizable system.
+"""Finds a control heuristic for ball and beam, a four dimensional non feedback-linearizable system.
 
 On every iteration, improve policy_v1 over the policy_vX methods from previous iterations.
-Make only small changes. Try to make the code short.
+Make only small changes. Try to make the code short. Be creative with the heuristic method.
 """
 
 import numpy as np
@@ -57,4 +57,4 @@ def policy(state: np.ndarray) -> float:
   The function is going to return a float value.
   """
   x1, x2, x3, x4 = state
-  return x1 + 2*x2 - 10*x3 - 5*x4
+  return 0.5*(x1 + 2*x2) - 10*x3 - 5*x4
