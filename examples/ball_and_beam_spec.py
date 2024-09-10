@@ -1,7 +1,7 @@
-"""Finds a control heuristic for ball and beam, a four dimensional non feedback-linearizable system.
+"""Finds a nonlinear control heuristic for ball and beam, a four dimensional non feedback-linearizable system.
 
 On every iteration, improve policy_v1 over the policy_vX methods from previous iterations.
-Make only small changes. Try to make the code short. Be creative with the heuristic method.
+Make only small changes. Try to make the code short. Be creative with the nonlinear function.
 """
 
 import numpy as np
@@ -53,8 +53,8 @@ def simulate(state: np.ndarray, control_input: float, sampling_time: float) -> n
 
 @funsearch.evolve
 def policy(state: np.ndarray) -> float:
-  """Returns a torque control input. state is r, r_dot, theta, theta_dot.
+  """Nonlinear control policy function.
   The function is going to return a float value.
   """
   x1, x2, x3, x4 = state
-  return 0.5*(x1 + 2*x2) - 10*x3 - 5*x4
+  return x1 + 2*x2**3 - 10*x3 - 5*np.sin(x4)
