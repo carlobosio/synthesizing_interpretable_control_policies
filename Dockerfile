@@ -13,6 +13,7 @@ COPY funsearch ./funsearch
 
 RUN pip install --no-deps . 
 RUN llm install llm-ollama
+RUN pip install dm_control
 
 # if running the container
 RUN rm -r ./funsearch ./build
