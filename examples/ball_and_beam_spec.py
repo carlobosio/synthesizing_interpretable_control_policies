@@ -12,7 +12,10 @@ import funsearch
 @funsearch.run
 def evaluate(init_pos) -> float:
   """Returns the negative rmse score for a heuristic."""
-  rmse_value = solve(init_pos)
+  rmse_value1 = solve(init_pos)
+  rmse_value2 = solve(-init_pos)
+  rmse_value = (rmse_value1 + rmse_value2) / 2
+  
   # print(f"[run] output rmse: {rmse_value}")
   if np.isfinite(rmse_value):
     return float(-np.log(rmse_value))
