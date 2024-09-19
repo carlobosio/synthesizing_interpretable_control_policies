@@ -20,17 +20,18 @@ def solve(num_runs) -> float:
   for _ in range(num_runs):
     time_step = env.reset()
     total_reward = 0.0
+    sum_diff = 0.0
     for _ in range(1000):
       ref = heuristic(env._step_count, time_step.observation, env.action_spec().shape)
       np.clip(ref, -np.pi, np.pi, out=ref)
       cos_ref = np.cos(ref)
       sin_ref = np.sin(ref)
       cos_obs = time_step.observation['orientation'][0]
-      sin_obs = time_step.observation['orientation'][1]
+      sin_obs = -time_step.observation['orientation'][1]
       cos_diff = cos_ref*cos_obs + sin_ref*sin_obs
       sin_diff = sin_ref*cos_obs - cos_ref*sin_obs
       diff = np.arctan2(sin_diff, cos_diff)
-      action = 1/np.pi * diff
+      action = 3/np.pi * diff - 2*time_step.observation['velocity'] + 0.1*sum_diff
       np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
       time_step = env.step(action)
       total_reward += time_step.reward
