@@ -23,8 +23,14 @@ def solve(num_runs) -> float:
     for _ in range(1000):
       ref = heuristic(env._step_count, time_step.observation, env.action_spec().shape)
       np.clip(ref, -np.pi, np.pi, out=ref)
-      ang = np.arctan2(time_step.observation['orientation'][1], time_step.observation['orientation'][0])
-      action = -1/np.pi * (ang - ref)
+      cos_ref = np.cos(ref)
+      sin_ref = np.sin(ref)
+      cos_obs = time_step.observation['orientation'][0]
+      sin_obs = time_step.observation['orientation'][1]
+      cos_diff = cos_ref*cos_obs + sin_ref*sin_obs
+      sin_diff = sin_ref*cos_obs - cos_ref*sin_obs
+      diff = np.arctan2(sin_diff, cos_diff)
+      action = 1/np.pi * diff
       np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
       time_step = env.step(action)
       total_reward += time_step.reward
