@@ -44,5 +44,5 @@ def heuristic(t: int, obs: np.ndarray, output_shape: tuple) -> float:
   """Returns an action reference between -pi and pi of shape output_shape.
   t is a time counter. obs is the observation.
   """
-  action = np.random.uniform(-1, 1, output_shape)
-  return action
+  ref = np.random.uniform(-1, 1, output_shape)
+  return ref
