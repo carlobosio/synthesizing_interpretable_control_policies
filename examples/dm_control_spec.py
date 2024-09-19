@@ -21,7 +21,10 @@ def solve(num_runs) -> float:
     time_step = env.reset()
     total_reward = 0.0
     for _ in range(1000):
-      action = heuristic(env._step_count, time_step.observation, env.action_spec().shape)
+      ref = heuristic(env._step_count, time_step.observation, env.action_spec().shape)
+      np.clip(ref, -np.pi, np.pi, out=ref)
+      ang = np.arctan2(time_step.observation['orientation'][1], time_step.observation['orientation'][0])
+      action = -1/np.pi * (ang - ref)
       np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
       time_step = env.step(action)
       total_reward += time_step.reward
@@ -31,8 +34,8 @@ def solve(num_runs) -> float:
 
 @funsearch.evolve
 def heuristic(t: int, obs: np.ndarray, output_shape: tuple) -> float:
-  """Returns an action of shape output_shape.
-  t is a time counter.
+  """Returns an action reference between -pi and pi of shape output_shape.
+  t is a time counter. obs is the observation.
   """
   action = np.random.uniform(-1, 1, output_shape)
   return action
