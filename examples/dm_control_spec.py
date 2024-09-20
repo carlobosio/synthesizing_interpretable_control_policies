@@ -23,7 +23,7 @@ def solve(num_runs) -> float:
     total_reward = 0.0
     sum_diff = 0.0
     for _ in range(1000):
-      ref = heuristic(env._step_count, time_step.observation, env.action_spec().shape)
+      ref = heuristic(env._step_count, time_step.observation)
       np.clip(ref, -np.pi, np.pi, out=ref)
       cos_ref = np.cos(ref)
       sin_ref = np.sin(ref)
