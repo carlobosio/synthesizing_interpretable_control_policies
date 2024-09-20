@@ -38,6 +38,8 @@ def solve(num_runs) -> float:
       time_step = env.step(action)
       # total_reward += time_step.reward
       total_reward += 1.0 - np.abs(theta)/np.pi
+      if np.abs(theta) <0.5:
+        total_reward += 1.0
     avg_reward += total_reward
   return avg_reward / num_runs
   # return total_reward
