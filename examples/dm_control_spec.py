@@ -24,7 +24,7 @@ def solve(num_runs) -> float:
     sum_diff = 0.0
     for _ in range(1000):
       ref = heuristic(env._step_count, time_step.observation)
-      np.clip(ref, -np.pi, np.pi, out=ref)
+      ref = np.clip(ref, -np.pi, np.pi)
       cos_ref = np.cos(ref)
       sin_ref = np.sin(ref)
       cos_theta = time_step.observation['orientation'][0]
