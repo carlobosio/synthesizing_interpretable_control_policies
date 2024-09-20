@@ -23,22 +23,24 @@ def solve(num_runs) -> float:
     total_reward = 0.0
     sum_diff = 0.0
     for _ in range(1000):
-      ref = heuristic(env._step_count, time_step.observation)
-      ref = np.clip(ref, -np.pi, np.pi)
-      cos_ref = np.cos(ref)
-      sin_ref = np.sin(ref)
-      cos_theta = time_step.observation['orientation'][0]
-      sin_theta = -time_step.observation['orientation'][1]
-      theta = np.arctan2(sin_theta, cos_theta)
-      cos_diff = cos_ref*cos_theta + sin_ref*sin_theta
-      sin_diff = sin_ref*cos_theta - cos_ref*sin_theta
-      diff = np.arctan2(sin_diff, cos_diff)
-      action = 3/np.pi * diff + 0.1*sum_diff - 0.1*time_step.observation['velocity']
-      np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
+      # ref = heuristic(env._step_count, time_step.observation)
+      # ref = np.clip(ref, -np.pi, np.pi)
+      # cos_ref = np.cos(ref)
+      # sin_ref = np.sin(ref)
+      # cos_theta = time_step.observation['orientation'][0]
+      # sin_theta = -time_step.observation['orientation'][1]
+      # theta = np.arctan2(sin_theta, cos_theta)
+      # cos_diff = cos_ref*cos_theta + sin_ref*sin_theta
+      # sin_diff = sin_ref*cos_theta - cos_ref*sin_theta
+      # diff = np.arctan2(sin_diff, cos_diff)
+      # action = 3/np.pi * diff + 0.1*sum_diff - 0.1*time_step.observation['velocity']
+      action = heuristic_action(env._step_count, obs)
+      action = np.clip(action, env.action_spec().minimum, env.action_spec().maximum)
+      # np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
       time_step = env.step(action)
       # total_reward += time_step.reward
       total_reward += 1.0 - np.abs(theta)/np.pi
-      if np.abs(theta) <0.5:
+      if np.abs(theta) < 0.5:
         total_reward += 1.0
     avg_reward += total_reward
   return avg_reward / num_runs
@@ -55,8 +57,14 @@ def initialize_env(env):
 
 @funsearch.evolve
 def heuristic(t: int, obs: np.ndarray) -> float:
-  """Returns an action reference between -pi and pi of shape output_shape.
+  """Returns an action between -1 and 1 of shape output_shape.
   t is a time counter. obs is the observation [zz, xz, vel].
   """
-  ref = 0.0
+  t_oscillation = 35  # Period of local oscillations
+  if t < t_oscillation:
+    ref = np.array([1])
+  # ...
+
+  else: # end part of the heuristic
+    ref = -5*np.arctan2(obs[1], obs[0]) - 0.9*obs[2]
   return ref
