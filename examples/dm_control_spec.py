@@ -27,9 +27,9 @@ def solve(num_runs) -> float:
       # ref = np.clip(ref, -np.pi, np.pi)
       # cos_ref = np.cos(ref)
       # sin_ref = np.sin(ref)
-      # cos_theta = time_step.observation['orientation'][0]
-      # sin_theta = -time_step.observation['orientation'][1]
-      # theta = np.arctan2(sin_theta, cos_theta)
+      cos_theta = time_step.observation['orientation'][0]
+      sin_theta = -time_step.observation['orientation'][1]
+      theta = np.arctan2(sin_theta, cos_theta)
       # cos_diff = cos_ref*cos_theta + sin_ref*sin_theta
       # sin_diff = sin_ref*cos_theta - cos_ref*sin_theta
       # diff = np.arctan2(sin_diff, cos_diff)
