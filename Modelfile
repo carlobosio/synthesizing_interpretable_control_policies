@@ -1,0 +1,2 @@
+FROM starcoder2:15b-instruct-v0.1-q8_0
+PARAMETER temperature 1
