@@ -63,8 +63,11 @@ def heuristic(t: int, obs: np.ndarray) -> float:
   t_oscillation = 35  # Period of local oscillations
   if t < t_oscillation:
     ref = np.array([1])
+  # if
+  # elif
+  # if
+  # elif
   # ...
-
   else: # end part of the heuristic
     ref = -5*np.arctan2(obs[1], obs[0]) - 0.9*obs[2]
   return ref
