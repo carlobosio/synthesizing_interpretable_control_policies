@@ -34,7 +34,7 @@ def solve(num_runs) -> float:
       # sin_diff = sin_ref*cos_theta - cos_ref*sin_theta
       # diff = np.arctan2(sin_diff, cos_diff)
       # action = 3/np.pi * diff + 0.1*sum_diff - 0.1*time_step.observation['velocity']
-      action = heuristic(env._step_count, obs)
+      action = heuristic(env._step_count, time_step.observation)
       action = np.clip(action, env.action_spec().minimum, env.action_spec().maximum)
       # np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
       time_step = env.step(action)
