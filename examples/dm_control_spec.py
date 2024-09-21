@@ -21,6 +21,7 @@ def solve(num_runs) -> float:
     time_step = env.reset()
     initialize_env(env)
     total_reward = 0.0
+    obs = concatenate_obs(time_step)
     sum_diff = 0.0
     for _ in range(1000):
       # ref = heuristic(env._step_count, time_step.observation)
@@ -34,7 +35,7 @@ def solve(num_runs) -> float:
       # sin_diff = sin_ref*cos_theta - cos_ref*sin_theta
       # diff = np.arctan2(sin_diff, cos_diff)
       # action = 3/np.pi * diff + 0.1*sum_diff - 0.1*time_step.observation['velocity']
-      action = heuristic(env._step_count, time_step.observation)
+      action = heuristic(env._step_count, obs)
       action = np.clip(action, env.action_spec().minimum, env.action_spec().maximum)
       # np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
       time_step = env.step(action)
@@ -42,9 +43,13 @@ def solve(num_runs) -> float:
       total_reward += 1.0 - np.abs(theta)/np.pi
       if np.abs(theta) < 0.5:
         total_reward += 1.0
+      obs = concatenate_obs(time_step)
     avg_reward += total_reward
   return avg_reward / num_runs
   # return total_reward
+
+def concatenate_obs(time_step):
+  return np.concatenate([time_step.observation[k].ravel() for k in obs_spec])
 
 def initialize_env(env):
   env.physics.named.data.qpos['hinge'][0] = np.pi
@@ -62,12 +67,12 @@ def heuristic(t: int, obs: np.ndarray) -> float:
   """
   t_oscillation = 35  # Period of local oscillations
   if t < t_oscillation:
-    ref = np.array([1])
+    action = np.array([1])
   # if
   # elif
   # if
   # elif
   # ...
   else: # end part of the heuristic
-    ref = -5*np.arctan2(obs[1], obs[0]) - 0.9*obs[2]
-  return ref
+    action = -5*np.arctan2(obs[1], obs[0]) - 0.9*obs[2]
+  return action
