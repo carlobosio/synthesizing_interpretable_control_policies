@@ -41,7 +41,7 @@ def solve(num_runs) -> float:
       # np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
       time_step = env.step(action)
       # total_reward += time_step.reward
-      total_reward += 1.0 - np.abs(theta)/np.pi
+      total_reward += 1.0 - np.abs(theta)/np.pi - 0.2*np.abs(action)
       if np.abs(theta) < 0.5:
         total_reward += 1.0
       obs = concatenate_obs(time_step, obs_spec)
@@ -67,6 +67,7 @@ def heuristic(t: int, obs: np.ndarray) -> float:
   t is a time counter. obs is the observation [zz, xz, vel].
   """
   t_oscillation = 35  # Period of local oscillations
+  theta = np.arctan2(-obs[1], obs[0])
   if t < t_oscillation:
     action = np.array([1])
   # if
@@ -74,6 +75,6 @@ def heuristic(t: int, obs: np.ndarray) -> float:
   # if
   # elif
   # ...
-  else: # end part of the heuristic
-    action = -5*np.arctan2(obs[1], obs[0]) - 0.9*obs[2]
+  else: # at the end
+    action = 5*theta - 0.9*obs[2]
   return action
