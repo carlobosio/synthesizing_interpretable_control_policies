@@ -17,37 +17,28 @@ def solve(num_runs) -> float:
   """
   env = suite.load(domain_name="pendulum", task_name="swingup")
   obs_spec = env.observation_spec()
+  action_spec = env.action_spec()
   avg_reward = 0.0
   for _ in range(num_runs):
     time_step = env.reset()
     initialize_env(env)
     total_reward = 0.0
     obs = concatenate_obs(time_step, obs_spec)
-    sum_diff = 0.0
+    # sum_diff = 0.0
     for _ in range(1000):
-      # ref = heuristic(env._step_count, time_step.observation)
-      # ref = np.clip(ref, -np.pi, np.pi)
-      # cos_ref = np.cos(ref)
-      # sin_ref = np.sin(ref)
       cos_theta = time_step.observation['orientation'][0]
       sin_theta = -time_step.observation['orientation'][1]
       theta = np.arctan2(sin_theta, cos_theta)
-      # cos_diff = cos_ref*cos_theta + sin_ref*sin_theta
-      # sin_diff = sin_ref*cos_theta - cos_ref*sin_theta
-      # diff = np.arctan2(sin_diff, cos_diff)
-      # action = 3/np.pi * diff + 0.1*sum_diff - 0.1*time_step.observation['velocity']
       action = heuristic(env._step_count, obs)
-      action = np.clip(action, env.action_spec().minimum, env.action_spec().maximum)
-      # np.clip(action, env.action_spec().minimum, env.action_spec().maximum, out=action)
+      action = np.clip(action, -1, 1)
       time_step = env.step(action)
       # total_reward += time_step.reward
-      total_reward += 1.0 - np.abs(theta)/np.pi - 0.2*np.abs(action)
+      total_reward += 1.0 - np.abs(theta)/np.pi - 0.2*np.abs(obs[2])
       if np.abs(theta) < 0.5:
         total_reward += 1.0
       obs = concatenate_obs(time_step, obs_spec)
     avg_reward += total_reward
   return avg_reward / num_runs
-  # return total_reward
 
 def concatenate_obs(time_step, obs_spec):
   return np.concatenate([time_step.observation[k].ravel() for k in obs_spec])
