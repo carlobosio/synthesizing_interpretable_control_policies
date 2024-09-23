@@ -69,7 +69,7 @@ def heuristic(t: int, obs: np.ndarray) -> float:
   t_oscillation = 35  # Period of local oscillations
   theta = np.arctan2(-obs[1], obs[0])
   if t < t_oscillation:
-    action = np.array([1])
+    action = 1.0
   # if
   # elif
   # if
