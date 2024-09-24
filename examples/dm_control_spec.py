@@ -5,9 +5,7 @@ Make only small changes. Try to make the code short.
 """
 
 import numpy as np
-
 import funsearch
-
 from dm_control import suite
 
 
@@ -33,7 +31,7 @@ def solve(num_runs) -> float:
       action = np.clip(action, -1, 1)
       time_step = env.step(action)
       # total_reward += time_step.reward
-      total_reward += 1.0 - np.abs(theta)/np.pi - 0.2*np.abs(obs[2])
+      total_reward += 1.0 - np.abs(theta)/np.pi - 0.2*np.abs(action)
       if np.abs(theta) < 0.5:
         total_reward += 1.0
       obs = concatenate_obs(time_step, obs_spec)
@@ -61,11 +59,7 @@ def heuristic(t: int, obs: np.ndarray) -> float:
   theta = np.arctan2(-obs[1], obs[0])
   if t < t_oscillation:
     action = 1.0
-  # if
-  # elif
-  # if
-  # elif
-  # ...
+  # elif t < 2*t_oscillation: ...
   else: # at the end
     action = 5*theta - 0.9*obs[2]
   return action
