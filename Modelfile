@@ -2,4 +2,4 @@
 FROM starcoder2:15b-instruct-v0.1-q8_0
 PARAMETER temperature 1
 PARAMETER top_p 0.95
-PARAMETER repeat_last_n 10
+PARAMETER repeat_last_n 15
