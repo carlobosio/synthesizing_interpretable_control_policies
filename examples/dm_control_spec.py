@@ -62,5 +62,5 @@ def heuristic(t: int, obs: np.ndarray) -> float:
     action = 1.0
   # elif t < ...
   else: # at the end
-    action = 5*theta - 0.9*obs[2]
+    action = 5*x1 - 0.9*x2
   return action
