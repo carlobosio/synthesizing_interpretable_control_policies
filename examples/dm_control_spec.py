@@ -31,7 +31,7 @@ def solve(num_runs) -> float:
       action = np.clip(action, -1, 1)
       time_step = env.step(action)
       # total_reward += time_step.reward
-      total_reward += 1.0 - np.abs(theta)/np.pi - 0.2*np.abs(action)
+      total_reward += 1.0 - np.abs(theta)/np.pi - 0.1*np.abs(action) - 0.1*np.abs(obs[2])
       if np.abs(theta) < 0.5:
         total_reward += 1.0
       obs = concatenate_obs(time_step, obs_spec)
@@ -52,14 +52,15 @@ def initialize_env(env):
 
 @funsearch.evolve
 def heuristic(t: int, obs: np.ndarray) -> float:
-  """Returns an action between -1 and 1 of shape output_shape.
-  t is a time counter. obs is the observation [zz, xz, vel].
+  """Returns an action between -1 and 1.
+  t is a time counter. obs size is 3.
   """
-  t_oscillation = 35  # Period of local oscillations
-  theta = np.arctan2(-obs[1], obs[0])
-  if t < t_oscillation:
+
+  x1 = np.arctan2(-obs[1], obs[0])
+  x2 = obs[2]
+  if t < 20:
     action = 1.0
-  # elif t < 2*t_oscillation: ...
+  # elif t < ...
   else: # at the end
     action = 5*theta - 0.9*obs[2]
   return action
