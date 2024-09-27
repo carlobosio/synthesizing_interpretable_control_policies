@@ -22,15 +22,13 @@ def solve(num_runs) -> float:
     initialize_to_zero(env)
     total_reward = 0.0
     obs = concatenate_obs(time_step, obs_spec)
-    # sum_diff = 0.0
     for _ in range(1000):
       cos_theta = time_step.observation['orientation'][0]
       sin_theta = -time_step.observation['orientation'][1]
       theta = np.arctan2(sin_theta, cos_theta)
-      action = heuristic(env._step_count, obs)
+      action = heuristic(obs)
       action = np.clip(action, -1, 1)
       time_step = env.step(action)
-      # total_reward += time_step.reward
       total_reward += 1.0 - np.abs(theta)/np.pi - 0.1*np.abs(action) #- 0.1*np.abs(obs[2])
       if np.abs(theta) < 0.5:
         total_reward += 1.0
@@ -51,16 +49,12 @@ def initialize_to_zero(env):
   env.physics.named.data.qfrc_bias['hinge'][0] = 0.0
 
 @funsearch.evolve
-def heuristic(t: int, obs: np.ndarray) -> float:
+def heuristic(obs: np.ndarray) -> float:
   """Returns an action between -1 and 1.
-  t is a time counter. obs size is 3.
+  obs size is 3.
   """
 
   x1 = np.arctan2(-obs[1], obs[0])
   x2 = obs[2]
-  if t < 20:
-    action = 1.0
-  # elif t < ...
-  else: # at the end
-    action = 5*x1 - 0.9*x2
+  action = 0.0
   return action
