@@ -31,7 +31,7 @@ def solve(num_runs) -> float:
       action = np.clip(action, -1, 1)
       time_step = env.step(action)
       # total_reward += time_step.reward
-      total_reward += 1.0 - np.abs(theta)/np.pi - 0.1*np.abs(action) - 0.1*np.abs(obs[2])
+      total_reward += 1.0 - np.abs(theta)/np.pi - 0.1*np.abs(action) #- 0.1*np.abs(obs[2])
       if np.abs(theta) < 0.5:
         total_reward += 1.0
       obs = concatenate_obs(time_step, obs_spec)
