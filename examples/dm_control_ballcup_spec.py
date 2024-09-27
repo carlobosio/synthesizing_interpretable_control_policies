@@ -13,9 +13,10 @@ from dm_control import suite
 def solve(num_runs) -> float:
   """Returns the reward for a heuristic.
   """
-  env = suite.load(domain_name="ball_in_cup", task_name="catch")
+  env = suite.load(domain_name="ball_in_cup", task_name="catch") 
   obs_spec = env.observation_spec()
   action_spec = env.action_spec()
+
   avg_reward = 0.0
   for _ in range(num_runs):
     # time.sleep(.002)
@@ -23,12 +24,14 @@ def solve(num_runs) -> float:
     initialize_to_zero(env)
     total_reward = 0.0
     obs = concatenate_obs(time_step, obs_spec)
+    obs[3] -= 0.3
     for _ in range(1000):
       action = heuristic(obs, action_spec.shape)
-      print(action)
+      # if action is None:
+      #   print("action is None")
       # action = np.array(action, dtype=np.float64)
-      u = np.clip(action, action_spec.minimum[0], action_spec.maximum[0])
-      time_step = env.step(u)
+      action = np.clip(action, action_spec.minimum[0], action_spec.maximum[0])
+      time_step = env.step(action)
       obs = concatenate_obs(time_step, obs_spec)
       obs[3] -= 0.3
       total_reward += time_step.reward # +1 if ball in cup, 0 otherwise
