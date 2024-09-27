@@ -25,6 +25,7 @@ def solve(num_runs) -> float:
     # sum_diff = 0.0
     for _ in range(1000):
       action = heuristic(obs)
+      print(action)
       action = np.array(action, dtype=np.float64)
       action = np.clip(action, action_spec.minimum, action_spec.maximum)
       time_step = env.step(action)
