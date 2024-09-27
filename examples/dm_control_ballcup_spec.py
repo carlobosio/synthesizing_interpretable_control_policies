@@ -18,17 +18,17 @@ def solve(num_runs) -> float:
   action_spec = env.action_spec()
   avg_reward = 0.0
   for _ in range(num_runs):
+    # time.sleep(.002)
     time_step = env.reset()
     initialize_to_zero(env)
     total_reward = 0.0
     obs = concatenate_obs(time_step, obs_spec)
-    # sum_diff = 0.0
     for _ in range(1000):
-      action = heuristic(obs)
+      action = heuristic(obs, action_spec.shape)
       print(action)
-      action = np.array(action, dtype=np.float64)
-      action = np.clip(action, action_spec.minimum, action_spec.maximum)
-      time_step = env.step(action)
+      # action = np.array(action, dtype=np.float64)
+      u = np.clip(action, action_spec.minimum[0], action_spec.maximum[0])
+      time_step = env.step(u)
       obs = concatenate_obs(time_step, obs_spec)
       obs[3] -= 0.3
       total_reward += time_step.reward # +1 if ball in cup, 0 otherwise
@@ -40,7 +40,7 @@ def concatenate_obs(time_step, obs_spec):
   return np.concatenate([time_step.observation[k].ravel() for k in obs_spec])
 
 def initialize_to_zero(env):
-  env.physics.named.data.qpos['ball_x'][0] = 0.0
+  env.physics.named.data.qpos['ball_x'][0] = 0.01
   env.physics.named.data.qpos['ball_z'][0] = 0.0
 
 def custom_reward(obs: np.ndarray) -> float:
@@ -52,7 +52,7 @@ def custom_reward(obs: np.ndarray) -> float:
   return 1 - np.abs(angle)/np.pi
 
 @funsearch.evolve
-def heuristic(obs: np.ndarray) -> np.ndarray:
+def heuristic(obs: np.ndarray, output_shape: tuple) -> np.ndarray:
   """Returns an action between -1 and 1.
   obs size is 8. return size is 2.
   """
@@ -60,6 +60,6 @@ def heuristic(obs: np.ndarray) -> np.ndarray:
   p2 = obs[2:4]
   v1 = obs[4:6]
   v2 = obs[6:8]
-  action = np.ndarray(shape=(2,),dtype=np.float64)
+  action = np.zeros((2,))
 
   return action
