@@ -25,7 +25,7 @@ def solve(num_runs) -> float:
     # sum_diff = 0.0
     for _ in range(1000):
       action = heuristic(obs)
-      action = np.clip(action, -1, 1)
+      # action = np.clip(action, action_spec.minimum, action_spec.maximum)
       time_step = env.step(action)
       obs = concatenate_obs(time_step, obs_spec)
       obs[3] -= 0.3
@@ -58,5 +58,5 @@ def heuristic(obs: np.ndarray) -> np.ndarray:
   p2 = obs[2:4]
   v1 = obs[4:6]
   v2 = obs[6:8]
-  
+
   return np.zeros((2,))
