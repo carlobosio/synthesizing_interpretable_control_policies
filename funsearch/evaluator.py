@@ -39,7 +39,13 @@ from funsearch import sandbox
 # METHOD_NAME_MATCHER = re.compile(r"policy_v\d+")
 # method_str = "def policy_v"
 
-METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+# use this for pendulum swingup
+# METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+# METHOD_NAME_MATCHER = re.compile(r"heuristic_v\d+")
+# method_str = "def heuristic_v"
+
+# use this for ball in cup
+METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> np.ndarray:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
 METHOD_NAME_MATCHER = re.compile(r"heuristic_v\d+")
 method_str = "def heuristic_v"
 
@@ -73,7 +79,7 @@ def _find_method_implementation(generated_code: str) -> Tuple[str, str]:
 
   Return the code and the name of the method.
   """
-  matches = METHOD_MATCHER.findall(generated_code)
+  matches = METHOD_MATCHER.findall(generated_code)  
   if not matches:
     return "", ""
   last_match = matches[-1]
