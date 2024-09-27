@@ -19,7 +19,7 @@ def solve(num_runs) -> float:
   avg_reward = 0.0
   for _ in range(num_runs):
     time_step = env.reset()
-    initialize_env(env)
+    initialize_to_zero(env)
     total_reward = 0.0
     obs = concatenate_obs(time_step, obs_spec)
     # sum_diff = 0.0
@@ -41,7 +41,7 @@ def solve(num_runs) -> float:
 def concatenate_obs(time_step, obs_spec):
   return np.concatenate([time_step.observation[k].ravel() for k in obs_spec])
 
-def initialize_env(env):
+def initialize_to_zero(env):
   env.physics.named.data.qpos['hinge'][0] = np.pi
   env.physics.named.data.qvel['hinge'][0] = 0.0
   env.physics.named.data.qacc['hinge'][0] = 0.0
