@@ -54,6 +54,9 @@ def heuristic(obs: np.ndarray) -> np.ndarray:
   """Returns an action between -1 and 1.
   obs size is 8. return size is 2.
   """
-  
+  p1 = obs[0:2]
+  p2 = obs[2:4]
+  v1 = obs[4:6]
+  v2 = obs[6:8]
   
   return np.zeros((2,))
