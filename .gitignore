@@ -31,4 +31,5 @@ data/
 
 tests/ball_and_beam_test.py
 tests/inv_pendulum_test.py
-tests/dm_control_test.py
+tests/dm_control_swingup_test.py
+tests/dm_control_ballcup_test.py
