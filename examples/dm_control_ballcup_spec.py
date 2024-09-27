@@ -60,5 +60,6 @@ def heuristic(obs: np.ndarray) -> np.ndarray:
   p2 = obs[2:4]
   v1 = obs[4:6]
   v2 = obs[6:8]
+  action = np.ndarray(shape=(2,),dtype=np.float64)
 
-  return np.zeros((2,))
+  return action
