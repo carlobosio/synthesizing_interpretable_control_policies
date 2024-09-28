@@ -17,11 +17,12 @@ def solve(num_runs) -> float:
   obs_spec = env.observation_spec()
   action_spec = env.action_spec()
 
-  avg_reward = 0.0
-  for _ in range(num_runs):
+  min_reward = 1e5
+  initial_xpos = np.array([-0.1, 0.0, 0.1])
+  for i in range(num_runs):
     # time.sleep(.002)
     time_step = env.reset()
-    initialize_to_zero(env)
+    initialize_env(env, initial_xpos[i])
     total_reward = 0.0
     obs = concatenate_obs(time_step, obs_spec)
     obs[3] -= 0.3
@@ -36,14 +37,15 @@ def solve(num_runs) -> float:
       obs[3] -= 0.3
       total_reward += time_step.reward # +1 if ball in cup, 0 otherwise
       total_reward += custom_reward(obs)
-    avg_reward += total_reward
-  return avg_reward / num_runs
+    if total_reward < min_reward:
+      min_reward = total_reward
+  return min_reward
 
 def concatenate_obs(time_step, obs_spec):
   return np.concatenate([time_step.observation[k].ravel() for k in obs_spec])
 
-def initialize_to_zero(env):
-  env.physics.named.data.qpos['ball_x'][0] = 0.01
+def initialize_env(env, x_pos):
+  env.physics.named.data.qpos['ball_x'][0] = x_pos
   env.physics.named.data.qpos['ball_z'][0] = 0.0
 
 def custom_reward(obs: np.ndarray) -> float:
@@ -52,7 +54,13 @@ def custom_reward(obs: np.ndarray) -> float:
   x_ball = obs[2]
   z_ball = obs[3]
   angle = np.arctan2(x_ball - x_cup, z_ball - z_cup)
-  return 1 - np.abs(angle)/np.pi
+  vx_ball = obs[6]
+  vz_ball = obs[7]
+  v_ball = np.sqrt(vx_ball**2 + vz_ball**2)
+  reward = 1 - np.abs(angle)/np.pi
+  if v_ball > 4.0:
+    reward -= 0.1*v_ball
+  return reward
 
 @funsearch.evolve
 def heuristic(obs: np.ndarray, output_shape: tuple) -> np.ndarray:
