@@ -22,7 +22,7 @@ def solve(num_runs) -> float:
   for i in range(num_runs):
     # time.sleep(.002)
     time_step = env.reset()
-    initialize_env(env, initial_xpos[i])
+    initialize_env(env, initial_xpos[i%3])
     total_reward = 0.0
     obs = concatenate_obs(time_step, obs_spec)
     obs[3] -= 0.3
