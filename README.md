@@ -1,5 +1,5 @@
 # FunSearch
-forked by CB to do some experiments
+forked by CB to do play around
 
 Usage:
 
@@ -33,8 +33,9 @@ funsearch run examples/inv_pendulum_spec_2.py 0.6 --sandbox_type ExternalProcess
 # [carlo] to run the ball and beam example
 funsearch run examples/ball_and_beam_spec.py 0.6 --sandbox_type ExternalProcessSandbox
 
-# [carlo] to run dm_control (5 rollouts)
-funsearch run examples/dm_control_spec.py 5 --sandbox_type ExternalProcessSandbox
+# [carlo] to run dm_control (the number is #rollouts)
+funsearch run examples/dm_control_swingup_spec.py 1 --sandbox_type ExternalProcessSandbox
+funsearch run examples/dm_control_ballcup_spec.py 1 --sandbox_type ExternalProcessSandbox
 
 # [carlo] to debug on local
 # remember to uncomment the lines that start debugpy inside the Dockerfile
