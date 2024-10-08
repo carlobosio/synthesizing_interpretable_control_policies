@@ -28,3 +28,6 @@ data/
 .vscode/
 .devcontainer/
 .github/
+
+plots/
+tests/
