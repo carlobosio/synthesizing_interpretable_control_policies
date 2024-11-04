@@ -2,8 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-openai-key.txt
-openai-key-1.txt
 
 # Distribution / packaging
 .Python
