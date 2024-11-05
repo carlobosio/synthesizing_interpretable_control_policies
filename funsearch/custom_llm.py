@@ -2,7 +2,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 class CustomLLM(torch.nn.Module):
-    def __init__(self, samples_per_prompt: int, model_name="bigcode/starcoder2-15b-instruct-v0.1", quantization_config=None, log_path=None):
+    def __init__(self, samples_per_prompt: int, device, model_name="bigcode/starcoder2-15b-instruct-v0.1", quantization_config=None, log_path=None):
         super().__init__()
         self._samples_per_prompt = samples_per_prompt
         self.prompt_count = 0
@@ -11,6 +11,7 @@ class CustomLLM(torch.nn.Module):
             self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, quantization_config=quantization_config)
         else:
             self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+        self.model.to(torch.device(device))
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         
     def forward(self, input_ids):
@@ -49,8 +50,8 @@ class CustomLLM(torch.nn.Module):
 # Example usage
 if __name__ == "__main__":
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-    llm = CustomLLM(model_name="bigcode/starcoder2-3b", quantization_config=quantization_config)
+    llm = CustomLLM(samples_per_prompt=1, device="cuda:0", model_name="bigcode/starcoder2-3b", quantization_config=quantization_config)
     prompt = "def fibonacci(n):"
-    samples = llm.draw_samples(prompt=prompt, num_samples=1)
+    samples = llm.draw_samples(prompt=prompt)
     for i, sample in enumerate(samples, 1):
         print(f"Sample {i}: {sample}")
