@@ -16,9 +16,10 @@ RUN llm install llm-ollama
 RUN pip install dm_control
 
 # if running the container
-RUN rm -r ./funsearch ./build
+# RUN rm -r ./funsearch ./build
+RUN rm -r ./build
 CMD /bin/bash
 
 # if debugging
 # RUN pip install debugpy
-# CMD ["python", "-Xfrozen_modules=off", "-m", "debugpy", "--listen", "0.0.0.0:5678", "--wait-for-client", "funsearch", "run", "examples/inv_pendulum_spec.py", "0.6", "--sandbox_type", "ExternalProcessSandbox"]
+# CMD ["python", "-Xfrozen_modules=off", "-m", "debugpy", "--listen", "0.0.0.0:5678", "--wait-for-client", "funsearch", "run", "examples/dm_control_ballcup_spec.py", "1", "--sandbox_type", "ExternalProcessSandbox"]
