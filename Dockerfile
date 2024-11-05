@@ -11,7 +11,7 @@ RUN pdm install  --no-self
 COPY examples ./examples
 COPY funsearch ./funsearch
 
-RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu113/torch_stable.html
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 RUN pip install transformers
 RUN pip install --no-deps . 
 RUN llm install llm-ollama
