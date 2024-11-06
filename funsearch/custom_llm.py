@@ -17,9 +17,9 @@ class CustomLLM(torch.nn.Module):
     def forward(self, input_ids):
         return self.model(input_ids)
     
-    def draw_samples(self, prompt, max_length=400):
+    def draw_samples(self, prompt: str, max_length=400):
         print("Model is on device:", self.model.device)
-        input_ids = self.tokenizer.encode(prompt, return_tensors='pt')
+        input_ids = self.tokenizer.encode(prompt, return_tensors='pt', padding=True)
         input_ids = input_ids.to(self.model.device)
         
         samples = []
@@ -32,7 +32,8 @@ class CustomLLM(torch.nn.Module):
                 do_sample=True, 
                 # top_k=50, 
                 top_p=0.95, 
-                temperature=1
+                temperature=1,
+                pad_token_id=self.tokenizer.eos_token_id
             )
             response = self.tokenizer.decode(output[0], skip_special_tokens=True)
             samples.append(response)
