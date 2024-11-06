@@ -11,13 +11,14 @@ class CustomLLM(torch.nn.Module):
             self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, quantization_config=quantization_config)
         else:
             self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
-        self.model.to(torch.device(device))
+        # self.model.to(torch.device(device))
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         
     def forward(self, input_ids):
         return self.model(input_ids)
     
     def draw_samples(self, prompt, max_length=400):
+        print("Model is on device:", self.model.device)
         input_ids = self.tokenizer.encode(prompt, return_tensors='pt')
         input_ids = input_ids.to(self.model.device)
         
