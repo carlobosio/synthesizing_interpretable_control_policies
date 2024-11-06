@@ -13,6 +13,7 @@ class CustomLLM(torch.nn.Module):
             self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
         # self.model.to(torch.device(device))
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.tokenizer.pad_token = self.tokenizer.eos_token
         
     def forward(self, input_ids):
         return self.model(input_ids)
