@@ -10,14 +10,14 @@ ENV PATH="/root/.venv/bin:$PATH"
 RUN pdm install  --no-self
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 RUN pip install transformers
+COPY examples ./examples
+COPY funsearch ./funsearch
+
 RUN pip install 'accelerate>=0.26.0'
 RUN pip install -U bitsandbytes
 RUN pip install --no-deps . 
-# RUN llm install llm-ollama
+RUN llm install llm-ollama
 RUN pip install dm_control
-
-COPY examples ./examples
-COPY funsearch ./funsearch
 
 # if running the container
 # RUN rm -r ./funsearch ./build
