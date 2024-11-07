@@ -53,7 +53,7 @@ class CustomLLM(torch.nn.Module):
 # Example usage
 if __name__ == "__main__":
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-    llm = CustomLLM(samples_per_prompt=1, device="cuda:0", model_name="bigcode/starcoder2-3b", quantization_config=quantization_config)
+    llm = CustomLLM(samples_per_prompt=1, device="cuda:0", quantization_config=quantization_config)
     prompt = "def fibonacci(n):"
     samples = llm.draw_samples(prompt=prompt)
     for i, sample in enumerate(samples, 1):
