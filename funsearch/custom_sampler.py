@@ -21,7 +21,7 @@ class CustomSampler:
         # evaluators: Sequence[evaluator.Evaluator],
         database = None,
         evaluators = None,
-        samples_per_prompt = 2
+        samples_per_prompt = 1
     ) -> None:
         self._database = database
         self._evaluators = evaluators
