@@ -10,7 +10,7 @@ class CustomLLM(torch.nn.Module):
         if quantization_config is not None:
             self.model = AutoModelForCausalLM.from_pretrained(model_name, 
                                                               trust_remote_code=True, 
-                                                              quantization_config=quantization_config
+                                                              quantization_config=quantization_config,
                                                               low_cpu_mem_usage=True)
         else:
             self.model = AutoModelForCausalLM.from_pretrained(model_name, 
