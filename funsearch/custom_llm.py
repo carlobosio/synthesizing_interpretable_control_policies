@@ -2,7 +2,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 class CustomLLM(torch.nn.Module):
-    def __init__(self, samples_per_prompt: int, model_name="bigcode/starcoder2-15b-instruct-v0.1", quantization_config=None, log_path=None):
+    def __init__(self, samples_per_prompt: int, device, model_name="bigcode/starcoder2-15b-instruct-v0.1", quantization_config=None, log_path=None):
         super().__init__()
         self._samples_per_prompt = samples_per_prompt
         self.prompt_count = 0
@@ -11,11 +11,11 @@ class CustomLLM(torch.nn.Module):
             self.model = AutoModelForCausalLM.from_pretrained(model_name, 
                                                               trust_remote_code=True, 
                                                               quantization_config=quantization_config,
-                                                              low_cpu_mem_usage=True)
+                                                              low_cpu_mem_usage=True).to(device)
         else:
             self.model = AutoModelForCausalLM.from_pretrained(model_name, 
                                                               trust_remote_code=True,
-                                                              low_cpu_mem_usage=True)
+                                                              low_cpu_mem_usage=True).to(device)
         # self.model.to(torch.device(device))
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.tokenizer.pad_token = "[PAD]" 
