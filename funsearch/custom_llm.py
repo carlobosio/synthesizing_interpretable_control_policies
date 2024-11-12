@@ -2,7 +2,11 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 class CustomLLM(torch.nn.Module):
-    def __init__(self, samples_per_prompt: int, device, model_name="bigcode/starcoder2-15b-instruct-v0.1", quantization_config=None, log_path=None):
+    def __init__(self, samples_per_prompt: int, 
+                 device, 
+                 model_name="bigcode/starcoder2-15b-instruct-v0.1", 
+                 quantization_config=None, 
+                 log_path=None):
         super().__init__()
         self._samples_per_prompt = samples_per_prompt
         self.prompt_count = 0
