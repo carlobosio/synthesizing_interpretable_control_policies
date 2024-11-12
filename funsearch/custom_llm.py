@@ -8,12 +8,19 @@ class CustomLLM(torch.nn.Module):
         self.prompt_count = 0
         self.log_path = log_path
         if quantization_config is not None:
-            self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, quantization_config=quantization_config)
+            self.model = AutoModelForCausalLM.from_pretrained(model_name, 
+                                                              trust_remote_code=True, 
+                                                              quantization_config=quantization_config
+                                                              low_cpu_mem_usage=True)
         else:
-            self.model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+            self.model = AutoModelForCausalLM.from_pretrained(model_name, 
+                                                              trust_remote_code=True,
+                                                              low_cpu_mem_usage=True)
         # self.model.to(torch.device(device))
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.tokenizer.pad_token = self.tokenizer.eos_token
+        self.tokenizer.pad_token = "[PAD]" 
+        self.tokenizer.pad_token_id = self.tokenizer.convert_tokens_to_ids("[PAD]")
+        # self.tokenizer.pad_token = self.tokenizer.eos_token
         
     def forward(self, input_ids):
         return self.model(input_ids)
