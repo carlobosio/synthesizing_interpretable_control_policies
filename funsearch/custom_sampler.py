@@ -75,7 +75,7 @@ if __name__ == "__main__":
     # database = programs_database.ProgramsDatabase()
     # evaluators = [evaluator.Evaluator() for _ in range(4)]
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-    sampler = CustomSampler(rank=0, quantization_config=quantization_config)
+    sampler = CustomSampler(rank=1, quantization_config=quantization_config)
     samples = sampler.sample_test()
     for i, sample in enumerate(samples, 1):
         print(f"Sample {i}: {sample}")
