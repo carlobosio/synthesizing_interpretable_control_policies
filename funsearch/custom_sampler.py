@@ -59,15 +59,13 @@ class CustomSampler:
             chosen_evaluator.analyse(
                 sample, prompt.island_id, prompt.version_generated)
     
-    def sample_test(self):
-
-        prompt = "def fibonacci(n):"
+    def sample_test(self, prompt="def fibonacci(n):"):
 
         if not prompt:
             logging.info(f"No prompt from database for gpu {self._rank}.")
             return
         
-        samples = self._llm.draw_samples(prompt.code)
+        samples = self._llm.draw_samples(prompt)
 
         return samples
 
