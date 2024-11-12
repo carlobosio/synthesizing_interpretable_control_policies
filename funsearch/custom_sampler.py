@@ -72,9 +72,9 @@ class CustomSampler:
 
 # Usage
 if __name__ == "__main__":
-    database = programs_database.ProgramsDatabase()
-    evaluators = [evaluator.Evaluator() for _ in range(4)]
-    sampler = CustomSampler(database, evaluators, rank=0)
+    # database = programs_database.ProgramsDatabase()
+    # evaluators = [evaluator.Evaluator() for _ in range(4)]
+    sampler = CustomSampler(rank=0)
     samples = sampler.sample_test()
     for i, sample in enumerate(samples, 1):
         print(f"Sample {i}: {sample}")
