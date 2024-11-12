@@ -1,8 +1,9 @@
 import torch
 import logging
-import torch.multiprocessing as mp
-from torch.nn.parallel import DistributedDataParallel as DDP
-import os
+# import torch.multiprocessing as mp
+# from torch.nn.parallel import DistributedDataParallel as DDP
+# import os
+from transformers import BitsAndBytesConfig
 import numpy as np
 from custom_llm import CustomLLM  # Import our StarCoder2
 
@@ -21,7 +22,8 @@ class CustomSampler:
         # evaluators: Sequence[evaluator.Evaluator],
         database = None,
         evaluators = None,
-        samples_per_prompt = 1
+        samples_per_prompt = 1,
+        quantization_config = None
     ) -> None:
         self._database = database
         self._evaluators = evaluators
@@ -32,7 +34,8 @@ class CustomSampler:
 
         self._llm = CustomLLM(samples_per_prompt=self._samples_per_prompt,
                               device=self.device,
-                              model_name="bigcode/starcoder2-15b-instruct-v0.1")
+                              model_name="bigcode/starcoder2-15b-instruct-v0.1",
+                              quantization_config=quantization_config)
 
         # self._llm = DDP(self._llm, device_ids=[rank]) # only needed if we are doing some training
 
@@ -73,7 +76,8 @@ class CustomSampler:
 if __name__ == "__main__":
     # database = programs_database.ProgramsDatabase()
     # evaluators = [evaluator.Evaluator() for _ in range(4)]
-    sampler = CustomSampler(rank=0)
+    quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+    sampler = CustomSampler(rank=0, quantization_config=quantization_config)
     samples = sampler.sample_test()
     for i, sample in enumerate(samples, 1):
         print(f"Sample {i}: {sample}")
