@@ -27,7 +27,7 @@ class CustomSampler:
         self._evaluators = evaluators
         self._samples_per_prompt = samples_per_prompt
         self._rank = rank
-        self.device = torch.device(f"cuda:{self._rank}")
+        self.device = f"cuda:{self._rank}"
         torch.cuda.set_device(rank)
 
         self._llm = CustomLLM(samples_per_prompt=self._samples_per_prompt,
