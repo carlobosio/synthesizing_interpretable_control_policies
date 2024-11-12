@@ -15,10 +15,12 @@ class CustomSampler:
 
     def __init__(
         self,
-        database: programs_database.ProgramsDatabase,
-        evaluators: Sequence[evaluator.Evaluator],
         # num_gpus=2
         rank: int,
+        # database: programs_database.ProgramsDatabase,
+        # evaluators: Sequence[evaluator.Evaluator],
+        database = None,
+        evaluators = None,
         samples_per_prompt = 2
     ) -> None:
         self._database = database
@@ -73,6 +75,6 @@ if __name__ == "__main__":
     database = programs_database.ProgramsDatabase()
     evaluators = [evaluator.Evaluator() for _ in range(4)]
     sampler = CustomSampler(database, evaluators, rank=0)
-    samples = sampler.sample()
+    samples = sampler.sample_test()
     for i, sample in enumerate(samples, 1):
         print(f"Sample {i}: {sample}")
