@@ -30,8 +30,7 @@ class CustomSampler:
         self.device = torch.device(f"cuda:{self._rank}")
         torch.cuda.set_device(rank)
 
-        self._llm = CustomLLM(samples_per_prompt=self._samples_per_prompt, 
-                              device=self.device,
+        self._llm = CustomLLM(samples_per_prompt=self._samples_per_prompt,
                               model_name="bigcode/starcoder2-15b").to(self.device)
         self._llm = DDP(self._llm, device_ids=[self._rank])
 
