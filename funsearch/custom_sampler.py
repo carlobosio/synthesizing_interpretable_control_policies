@@ -33,7 +33,6 @@ class CustomSampler:
         self._llm = CustomLLM(samples_per_prompt=self._samples_per_prompt,
                               device=self.device,
                               model_name="bigcode/starcoder2-15b-instruct-v0.1")
-        self._llm = DDP(self._llm, device_ids=[self._rank])
 
         # self._llm = DDP(self._llm, device_ids=[rank]) # only needed if we are doing some training
 
