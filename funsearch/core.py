@@ -15,6 +15,7 @@
 
 """A single-threaded implementation of the FunSearch pipeline."""
 import logging
+import multiprocessing
 
 from funsearch import code_manipulation
 
@@ -48,3 +49,27 @@ def run(samplers, database, iterations: int = -1):
     logging.info("Keyboard interrupt. Stopping.")
   database.backup()
 
+def sample_sampler(sampler):
+    """Function to run a single sampler."""
+    sampler.sample()
+
+def run_parallel(samplers, database, iterations: int = -1):
+    """Launches a FunSearch experiment in parallel."""
+    try:
+        processes = []
+        for s in samplers:
+            p = multiprocessing.Process(target=sample_sampler, args=(s,))
+            p.start()
+            processes.append(p)
+
+        for _ in range(iterations if iterations > 0 else float('inf')):
+            # Wait for all processes to finish one iteration
+            for p in processes:
+                p.join()
+
+    except KeyboardInterrupt:
+        logging.info("Keyboard interrupt. Stopping.")
+        for p in processes:
+            p.terminate()  # Kill processes safely
+
+    database.backup()
