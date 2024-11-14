@@ -64,19 +64,25 @@ def sample_worker(sampler, iter):
 def run_parallel(samplers, database, iterations: int = -1):
     """Launches a FunSearch experiment in parallel."""
     try:
+        logging.info("Starting parallel processes...")
         processes = []
         for s in samplers:
+            logging.info(f"Spawning process for sampler: {s}")
             p = mp.Process(target=sample_worker, args=(s,iterations))
             p.start()
             processes.append(p)
+            logging.info(f"Process {p.pid} started.")
 
         for p in processes:
+            logging.info(f"Waiting for process {p.pid} to finish...")
             p.join()
 
     except KeyboardInterrupt:
         logging.info("Keyboard interrupt. Stopping.")
         for p in processes:
+            logging.info(f"Terminating process {p.pid}...")
             p.terminate()  # Kill processes safely
             p.join()
     finally:
+        logging.info("Backing up database...")
         database.backup()
