@@ -18,6 +18,7 @@ class CustomSampler:
         self,
         # num_gpus=2
         rank: int,
+        model_name: str = "bigcode/starcoder2-15b-instruct-v0.1",
         database: programs_database.ProgramsDatabase = None,
         evaluators: Sequence[evaluator.Evaluator] = None,
         samples_per_prompt = 1,
@@ -32,7 +33,7 @@ class CustomSampler:
 
         self._llm = CustomLLM(samples_per_prompt=self._samples_per_prompt,
                               device=self.device,
-                              model_name="bigcode/starcoder2-15b-instruct-v0.1",
+                              model_name=model_name,
                               quantization_config=quantization_config)
 
         # self._llm = DDP(self._llm, device_ids=[rank]) # only needed if we are doing some training
