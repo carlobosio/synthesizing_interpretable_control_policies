@@ -69,6 +69,7 @@ def run_parallel(samplers, database, iterations: int = -1):
         for s in samplers:
             logging.info(f"Spawning process for sampler: {s}")
             p = mp.Process(target=sample_worker, args=(s,iterations))
+            logging.info(f"Starting process {p.pid}...")
             p.start()
             processes.append(p)
             logging.info(f"Process {p.pid} started.")
