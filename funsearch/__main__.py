@@ -7,7 +7,8 @@ import pickle
 import time
 
 import click
-import llm
+# import llm
+from transformers import BitsAndBytesConfig
 # import ollama
 from dotenv import load_dotenv
 # import debugpy
@@ -19,7 +20,7 @@ from dotenv import load_dotenv
 # print("Debugger attached. Continuing execution.")
 
 
-from funsearch import config, core, sandbox, sampler, programs_database, code_manipulation, evaluator
+from funsearch import config, core, sandbox, sampler, programs_database, code_manipulation, evaluator, custom_sampler
 
 LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
 logging.basicConfig(level=LOGLEVEL)
@@ -68,8 +69,9 @@ def main(ctx):
 @click.argument("spec_file", type=click.File("r"))
 @click.argument('inputs')
 # @click.option('--model_name', default="gpt-3.5-turbo-instruct", help='LLM model')
-# @click.option('--model_name', default="deepseek-coder", help='LLM model')
-@click.option('--model_name', default="starcoder-carlo", help='LLM model')
+@click.option('--model_name', default="bigcode/starcoder2-15b-instruct-v0.1", help='LLM model')
+# @click.option('--model_name', default="starcoder2:3b", help='LLM model')
+# @click.option('--model_name', default="starcoder-carlo", help='LLM model')
 @click.option('--output_path', default="./data/", type=click.Path(file_okay=False), help='path for logs and data')
 @click.option('--load_backup', default=None, type=click.File("rb"), help='Use existing program database')
 @click.option('--iterations', default=-1, type=click.INT, help='Max iterations per sampler')
@@ -107,15 +109,11 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
     log_path.mkdir(parents=True)
     logging.info(f"Writing logs to {log_path}")
 
-  model = llm.get_model(model_name)
-  # model.key = model.get_key()
-  lm = sampler.LLM(2, model, log_path)
-
   specification = spec_file.read()
   function_to_evolve, function_to_run = core._extract_function_names(specification)
   template = code_manipulation.text_to_program(specification)
 
-  conf = config.Config(num_evaluators=1)
+  conf = config.Config(num_evaluators=2)
   database = programs_database.ProgramsDatabase(
     conf.programs_database, template, function_to_evolve, identifier=timestamp, log_path=log_path)
   if load_backup:
@@ -139,10 +137,22 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
   assert len(database._islands[0]._clusters) > 0, ("Initial analysis failed. Make sure that Sandbox works! "
                                                    "See e.g. the error files under sandbox data.")
 
-  samplers = [sampler.Sampler(database, evaluators, lm)
-              for _ in range(samplers)]
+  ### ORIGINAL #########################################
+  # model = llm.get_model(model_name)
+  # # model.key = model.get_key()
+  # lm = sampler.LLM(samples_per_prompt=2, model=model, log_path=log_path)
+  # samplers = [sampler.Sampler(database, evaluators, lm)
+  #             for _ in range(samplers)]
 
-  core.run(samplers, database, iterations)
+  # core.run(samplers, database, iterations)
+  ######################################################
+
+  ### PARALLELIZED (CUSTOM) ############################
+  quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+  samplers = [custom_sampler.CustomSampler(rank=i, model_name=model_name, database=database, evaluators=evaluators, samples_per_prompt=2, quantization_config=quantization_config)
+              for i in range(samplers)]
+  core.run_parallel(samplers, database, iterations)
+  ######################################################
 
 
 @main.command()
