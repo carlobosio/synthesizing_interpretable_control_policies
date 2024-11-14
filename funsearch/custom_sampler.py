@@ -18,10 +18,8 @@ class CustomSampler:
         self,
         # num_gpus=2
         rank: int,
-        # database: programs_database.ProgramsDatabase,
-        # evaluators: Sequence[evaluator.Evaluator],
-        database = None,
-        evaluators = None,
+        database: programs_database.ProgramsDatabase = None,
+        evaluators: Sequence[evaluator.Evaluator] = None,
         samples_per_prompt = 1,
         quantization_config = None
     ) -> None:
@@ -55,7 +53,8 @@ class CustomSampler:
         samples = self._llm.draw_samples(prompt.code)
 
         for sample in samples:
-            chosen_evaluator = np.random.choice(self._evaluators)
+            # chosen_evaluator = np.random.choice(self._evaluators)
+            chosen_evaluator = self._evaluators[self._rank]
             chosen_evaluator.analyse(
                 sample, prompt.island_id, prompt.version_generated)
     
