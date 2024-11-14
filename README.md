@@ -35,7 +35,7 @@ funsearch run examples/ball_and_beam_spec.py 0.6 --sandbox_type ExternalProcessS
 
 # [carlo] to run dm_control (the number is #rollouts)
 funsearch run examples/dm_control_swingup_spec.py 1 --sandbox_type ExternalProcessSandbox
-funsearch run examples/dm_control_ballcup_spec.py 1 --sandbox_type ExternalProcessSandbox
+funsearch run examples/dm_control_ballcup_spec.py 3 --sandbox_type ExternalProcessSandbox
 
 # [carlo] to debug on local
 # remember to uncomment the lines that start debugpy inside the Dockerfile
