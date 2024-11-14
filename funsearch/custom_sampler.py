@@ -5,7 +5,7 @@ import logging
 # import os
 from transformers import BitsAndBytesConfig
 import numpy as np
-from custom_llm import CustomLLM  # Import our StarCoder2
+from funsearch import custom_llm  # Import our StarCoder2
 
 from collections.abc import Collection, Sequence
 from funsearch import evaluator
@@ -31,7 +31,7 @@ class CustomSampler:
         self.device = f"cuda:{self._rank}"
         torch.cuda.set_device(rank)
 
-        self._llm = CustomLLM(samples_per_prompt=self._samples_per_prompt,
+        self._llm = custom_llm.CustomLLM(samples_per_prompt=self._samples_per_prompt,
                               device=self.device,
                               model_name=model_name,
                               quantization_config=quantization_config)
