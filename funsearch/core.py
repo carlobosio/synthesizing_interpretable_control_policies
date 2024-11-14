@@ -64,8 +64,6 @@ def sample_worker(sampler, iter):
 def run_parallel(samplers, database, iterations: int = -1):
     """Launches a FunSearch experiment in parallel."""
     try:
-        mp.set_start_method('spawn', force=True)
-
         processes = []
         for s in samplers:
             p = mp.Process(target=sample_worker, args=(s,iterations))

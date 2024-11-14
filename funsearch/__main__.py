@@ -9,6 +9,7 @@ import time
 import click
 # import llm
 from transformers import BitsAndBytesConfig
+import torch.multiprocessing as mp
 # import ollama
 from dotenv import load_dotenv
 # import debugpy
@@ -24,7 +25,7 @@ from funsearch import config, core, sandbox, sampler, programs_database, code_ma
 
 LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
 logging.basicConfig(level=LOGLEVEL)
-
+mp.set_start_method('spawn', force=True)
 
 def get_all_subclasses(cls):
   all_subclasses = []
