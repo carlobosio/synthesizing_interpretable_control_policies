@@ -75,7 +75,7 @@ def main(ctx):
 @click.option('--output_path', default="./data/", type=click.Path(file_okay=False), help='path for logs and data')
 @click.option('--load_backup', default=None, type=click.File("rb"), help='Use existing program database')
 @click.option('--iterations', default=-1, type=click.INT, help='Max iterations per sampler')
-@click.option('--samplers', default=15, type=click.INT, help='Samplers')
+@click.option('--samplers', default=2, type=click.INT, help='Samplers')
 @click.option('--sandbox_type', default="ContainerSandbox", type=click.Choice(SANDBOX_NAMES), help='Sandbox type')
 def run(spec_file, inputs, model_name, output_path, load_backup, iterations, samplers, sandbox_type):
   """ Execute function-search algorithm:
