@@ -52,10 +52,10 @@ def run(samplers, database, iterations: int = -1):
 def sample_worker(sampler, iter):
     """Function to run a single sampler."""
     try:
-        while iterations != 0:
+        while iter != 0:
             sampler.sample()
-            if iterations > 0:
-                iterations -= 1
+            if iter > 0:
+                iter -= 1
     except KeyboardInterrupt:
         logging.info("Keyboard interrupt in sample worker.")
     finally:
