@@ -15,7 +15,7 @@
 
 """A single-threaded implementation of the FunSearch pipeline."""
 import logging
-import multiprocessing
+import torch.multiprocessing as mp
 
 from funsearch import code_manipulation
 
@@ -49,27 +49,36 @@ def run(samplers, database, iterations: int = -1):
     logging.info("Keyboard interrupt. Stopping.")
   database.backup()
 
-def sample_sampler(sampler):
+def sample_worker(sampler, iter):
     """Function to run a single sampler."""
-    sampler.sample()
+    try:
+        while iterations != 0:
+            sampler.sample()
+            if iterations > 0:
+                iterations -= 1
+    except KeyboardInterrupt:
+        logging.info("Keyboard interrupt in sample worker.")
+    finally:
+        logging.info("Sample worker finished.")
 
 def run_parallel(samplers, database, iterations: int = -1):
     """Launches a FunSearch experiment in parallel."""
     try:
+        mp.set_start_method('spawn', force=True)
+
         processes = []
         for s in samplers:
-            p = multiprocessing.Process(target=sample_sampler, args=(s,))
+            p = mp.Process(target=sample_worker, args=(s,iterations))
             p.start()
             processes.append(p)
 
-        for _ in range(iterations if iterations > 0 else float('inf')):
-            # Wait for all processes to finish one iteration
-            for p in processes:
-                p.join()
+        for p in processes:
+            p.join()
 
     except KeyboardInterrupt:
         logging.info("Keyboard interrupt. Stopping.")
         for p in processes:
             p.terminate()  # Kill processes safely
-
-    database.backup()
+            p.join()
+    finally:
+        database.backup()
