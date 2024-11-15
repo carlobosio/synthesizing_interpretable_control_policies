@@ -150,8 +150,13 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
 
   ### PARALLELIZED (CUSTOM) ############################
   quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-  samplers = [custom_sampler.CustomSampler(rank=i, model_name=model_name, database=database, evaluators=evaluators, samples_per_prompt=2, quantization_config=quantization_config)
-              for i in range(samplers)]
+  samplers = [custom_sampler.CustomSampler(rank=i, 
+                                           model_name=model_name, 
+                                           database=database, 
+                                           evaluators=evaluators, 
+                                           samples_per_prompt=2, 
+                                           quantization_config=quantization_config,
+                                           log_path=log_path) for i in range(samplers)]
   core.run_parallel(samplers, database, iterations)
   ######################################################
 
