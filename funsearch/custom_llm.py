@@ -33,8 +33,9 @@ class CustomLLM(torch.nn.Module):
     def forward(self, input_ids):
         return self.model(input_ids)
     
-    def draw_samples(self, prompt: str, max_length=400):
+    def draw_samples(self, prompt: str, max_length=600):
         # print("Model is on device:", self.model.device)
+        prompt = "You are an exceptionally intelligent coding assistant that consistently delivers accurate and reliable responses to user instructions." + prompt
         input_ids = self.tokenizer.encode(prompt, return_tensors='pt', padding=True)
         input_ids = input_ids.to(self.model.device)
         
