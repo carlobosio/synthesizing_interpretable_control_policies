@@ -1,5 +1,6 @@
 import torch
 import logging
+import pathlib
 # import torch.multiprocessing as mp
 # from torch.nn.parallel import DistributedDataParallel as DDP
 # import os
@@ -45,6 +46,9 @@ class CustomSampler:
     def initialize_llm(self):
         """Initialize the LLM in the subprocess."""
         torch.cuda.set_device(self._rank)
+        if not self.log_path.exists():
+            self.log_path.mkdir(parents=True)
+            logging.info(f"Initializing LLM to write in {self.log_path}")
         self._llm = custom_llm.CustomLLM(
             samples_per_prompt=self._samples_per_prompt,
             device=self.device,
