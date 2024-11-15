@@ -72,10 +72,19 @@ class CustomSampler:
 
 # Usage
 if __name__ == "__main__":
+    
+    import pickle
+    
     # database = programs_database.ProgramsDatabase()
     # evaluators = [evaluator.Evaluator() for _ in range(4)]
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
     sampler = CustomSampler(rank=1, quantization_config=quantization_config)
-    samples = sampler.sample_test()
-    for i, sample in enumerate(samples, 1):
-        print(f"Sample {i}: {sample}")
+    # samples = sampler.sample_test()
+    # for i, sample in enumerate(samples, 1):
+    #     print(f"Sample {i}: {sample}")
+
+    for attr_name, attr_value in vars(sampler).items():
+        try:
+            pickle.dumps(attr_value)
+        except Exception as e:
+            print(f"Attribute {attr_name} is not picklable: {e}")
