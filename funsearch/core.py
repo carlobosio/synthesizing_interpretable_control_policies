@@ -51,6 +51,7 @@ def run(samplers, database, iterations: int = -1):
 
 def sample_worker(sampler, iter):
     """Function to run a single sampler."""
+    sampler.initialize_llm()
     try:
         while iter != 0:
             sampler.sample()
