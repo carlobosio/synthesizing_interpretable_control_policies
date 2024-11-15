@@ -20,7 +20,7 @@ RUN pip install --no-deps .
 RUN pip install dm_control
 
 # if running the container
-# RUN rm -r ./funsearch
+RUN rm -r ./funsearch
 RUN rm -r ./build
 CMD /bin/bash
 
