@@ -40,14 +40,14 @@ from funsearch import sandbox
 # method_str = "def policy_v"
 
 # use this for pendulum swingup
-# METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
-# METHOD_NAME_MATCHER = re.compile(r"heuristic_v\d+")
-# method_str = "def heuristic_v"
-
-# use this for ball in cup
-METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> np.ndarray:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
 METHOD_NAME_MATCHER = re.compile(r"heuristic_v\d+")
 method_str = "def heuristic_v"
+
+# use this for ball in cup
+# METHOD_MATCHER = re.compile(r"def heuristic_v\d\(.*?\) -> np.ndarray:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
+# METHOD_NAME_MATCHER = re.compile(r"heuristic_v\d+")
+# method_str = "def heuristic_v"
 
 # [carlo] solve inverted pendulum with reduced context 
 # METHOD_MATCHER = re.compile(r"def function_v\d\(.*?\) -> float:(?:\s*(?:[ \t]*(?!def|#|`|').*(?:\n|$)))+")
