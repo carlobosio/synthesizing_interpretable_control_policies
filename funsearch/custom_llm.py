@@ -49,7 +49,7 @@ class CustomLLM(torch.nn.Module):
                 do_sample=True, 
                 # top_k=50, 
                 top_p=0.95, 
-                temperature=1,
+                temperature=0.1,
                 pad_token_id=self.tokenizer.eos_token_id
             )
             response = self.tokenizer.decode(output[0], skip_special_tokens=True)
