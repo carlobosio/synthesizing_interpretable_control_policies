@@ -34,7 +34,7 @@ class CustomLLM(torch.nn.Module):
         return self.model(input_ids)
     
     def draw_samples(self, prompt: str, max_length=400):
-        print("Model is on device:", self.model.device)
+        # print("Model is on device:", self.model.device)
         input_ids = self.tokenizer.encode(prompt, return_tensors='pt', padding=True)
         input_ids = input_ids.to(self.model.device)
         
