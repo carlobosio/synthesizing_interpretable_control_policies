@@ -22,6 +22,7 @@ class CustomSampler:
         database: programs_database.ProgramsDatabase = None,
         evaluators: Sequence[evaluator.Evaluator] = None,
         samples_per_prompt = 1,
+        log_path = None,
         quantization_config = None
     ) -> None:
         self._database = database
@@ -30,6 +31,7 @@ class CustomSampler:
         self._rank = rank
         self.model_name = model_name
         self.device = f"cuda:{self._rank}"
+        self.log_path = log_path + f"/gpu_{self._rank}" 
         self.quantization_config = quantization_config
         # torch.cuda.set_device(rank)
         self._llm = None
@@ -48,6 +50,7 @@ class CustomSampler:
             device=self.device,
             model_name=self.model_name,
             quantization_config=self.quantization_config,
+            log_path=self.log_path
         )
 
     def cleanup(self):
