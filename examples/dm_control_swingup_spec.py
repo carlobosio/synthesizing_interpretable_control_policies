@@ -1,6 +1,6 @@
 """Finds a heuristic policy for the pendulum swingup task.
 
-On every iteration, improve policy_v1 over the policy_vX methods from previous iterations.
+On every iteration, improve heuristic_v1 over the heuristic_vX methods from previous iterations.
 Make only small changes. Try to make the code short. 
 """
 
