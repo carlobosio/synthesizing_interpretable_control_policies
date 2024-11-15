@@ -28,15 +28,27 @@ class CustomSampler:
         self._evaluators = evaluators
         self._samples_per_prompt = samples_per_prompt
         self._rank = rank
+        self.model_name = model_name
         self.device = f"cuda:{self._rank}"
-        torch.cuda.set_device(rank)
-
-        self._llm = custom_llm.CustomLLM(samples_per_prompt=self._samples_per_prompt,
-                              device=self.device,
-                              model_name=model_name,
-                              quantization_config=quantization_config)
+        self.quantization_config = quantization_config
+        # torch.cuda.set_device(rank)
+        self._llm = None
+        # self._llm = custom_llm.CustomLLM(samples_per_prompt=self._samples_per_prompt,
+        #                       device=self.device,
+        #                       model_name=model_name,
+        #                       quantization_config=quantization_config)
 
         # self._llm = DDP(self._llm, device_ids=[rank]) # only needed if we are doing some training
+
+    def initialize_llm(self):
+        """Initialize the LLM in the subprocess."""
+        torch.cuda.set_device(self._rank)
+        self._llm = custom_llm.CustomLLM(
+            samples_per_prompt=self._samples_per_prompt,
+            device=self.device,
+            model_name=self.model_name,
+            quantization_config=self.quantization_config,
+        )
 
     def cleanup(self):
         """Clean up any resources allocated by the sampler."""
