@@ -45,11 +45,11 @@ class CustomLLM(torch.nn.Module):
                 input_ids, 
                 max_length=max_length, 
                 num_return_sequences=1, 
-                no_repeat_ngram_size=3, 
+                no_repeat_ngram_size=None, 
                 do_sample=True, 
-                # top_k=50, 
+                top_k=40, 
                 top_p=0.95, 
-                temperature=0.1,
+                temperature=1,
                 pad_token_id=self.tokenizer.eos_token_id
             )
             response = self.tokenizer.decode(output[0], skip_special_tokens=True)
