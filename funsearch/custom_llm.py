@@ -33,7 +33,7 @@ class CustomLLM(torch.nn.Module):
     def forward(self, input_ids):
         return self.model(input_ids)
     
-    def draw_samples(self, prompt: str, max_length=600):
+    def draw_samples(self, prompt: str, max_length=400):
         # print("Model is on device:", self.model.device)
         prompt = "You are an exceptionally intelligent coding assistant that consistently delivers accurate and reliable responses to user instructions." + prompt
         input_ids = self.tokenizer.encode(prompt, return_tensors='pt', padding=True)
@@ -49,8 +49,9 @@ class CustomLLM(torch.nn.Module):
                 do_sample=True, 
                 top_k=40, 
                 top_p=0.95, 
-                temperature=1,
-                pad_token_id=self.tokenizer.eos_token_id
+                repetition_penalty=1.1,
+                temperature=1.0
+                # pad_token_id=self.tokenizer.eos_token_id
             )
             response = self.tokenizer.decode(output[0], skip_special_tokens=True)
             samples.append(response)
