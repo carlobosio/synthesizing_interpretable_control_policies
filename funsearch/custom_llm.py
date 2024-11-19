@@ -78,9 +78,10 @@ if __name__ == "__main__":
     #           "# fill here\n"
     #           "return out\n"
     #           "### Response")
-    prompt = ("def sum_first_n(n):\n"
+    prompt = ("### Instruction\n def sum_first_n(n):\n"
               "# fill here\n"
-              "return out\n")
+              "return out\n"
+              "### Response")
              
     samples = llm.draw_samples(prompt=prompt)
     for i, sample in enumerate(samples, 1):
