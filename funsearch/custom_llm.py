@@ -35,7 +35,7 @@ class CustomLLM(torch.nn.Module):
     
     def draw_samples(self, prompt: str, max_length=400):
         # print("Model is on device:", self.model.device)
-        prompt = "You are an exceptionally intelligent coding assistant that consistently delivers accurate and reliable responses to user instructions." + prompt
+        # prompt = "You are an exceptionally intelligent coding assistant that consistently delivers accurate and reliable responses to user instructions." + prompt
         input_ids = self.tokenizer.encode(prompt, return_tensors='pt', padding=True)
         input_ids = input_ids.to(self.model.device)
         
@@ -78,7 +78,9 @@ if __name__ == "__main__":
     #           "# fill here\n"
     #           "return out\n"
     #           "### Response")
-    prompt = "def sum_first_n(n):\n"
+    prompt = ("def sum_first_n(n):\n"
+              "# fill here\n"
+              "return out\n")
              
     samples = llm.draw_samples(prompt=prompt)
     for i, sample in enumerate(samples, 1):
