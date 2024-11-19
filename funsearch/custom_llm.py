@@ -50,8 +50,8 @@ class CustomLLM(torch.nn.Module):
                 top_k=40, 
                 top_p=0.95, 
                 repetition_penalty=1.1,
-                temperature=1.0
-                # pad_token_id=self.tokenizer.eos_token_id
+                temperature=1.0,
+                pad_token_id=self.tokenizer.pad_token_id
             )
             response = self.tokenizer.decode(output[0], skip_special_tokens=True)
             samples.append(response)
@@ -71,7 +71,14 @@ class CustomLLM(torch.nn.Module):
 if __name__ == "__main__":
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
     llm = CustomLLM(samples_per_prompt=1, device="cuda:1", quantization_config=quantization_config)
-    prompt = "def fibonacci(n):"
+    prompt = ("You are an exceptionally intelligent coding assistant" 
+              "that consistently delivers accurate and reliable responses to user instructions.\n\n"
+              "### Instruction Complete the function.\n"
+              "def fibonacci(n):\n"
+              "# fill here\n"
+              "return out\n"
+              "### Response")
+             
     samples = llm.draw_samples(prompt=prompt)
     for i, sample in enumerate(samples, 1):
         print(f"Sample {i}: {sample}")
