@@ -16,7 +16,7 @@ COPY funsearch ./funsearch
 RUN pip install 'accelerate>=0.26.0'
 RUN pip install -U bitsandbytes
 RUN pip install --no-deps . 
-# RUN llm install llm-ollama
+RUN llm install llm-ollama
 RUN pip install dm_control
 
 # if running the container
@@ -26,4 +26,4 @@ CMD /bin/bash
 
 # if debugging
 # RUN pip install debugpy
-# CMD ["python", "-Xfrozen_modules=off", "-m", "debugpy", "--listen", "0.0.0.0:5678", "--wait-for-client", "funsearch", "run", "examples/dm_control_ballcup_spec.py", "1", "--sandbox_type", "ExternalProcessSandbox"]
+# CMD ["python", "-Xfrozen_modules=off", "-m", "debugpy", "--listen", "0.0.0.0:5678", "--wait-for-client", "funsearch", "run", "examples/dm_control_swingup_spec.py", "1", "--sandbox_type", "ExternalProcessSandbox"]
