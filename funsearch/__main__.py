@@ -7,10 +7,10 @@ import pickle
 import time
 
 import click
-import llm
-# from transformers import BitsAndBytesConfig
-# import torch.multiprocessing as mp
-import ollama
+# import llm
+from transformers import BitsAndBytesConfig
+import torch.multiprocessing as mp
+# import ollama
 from dotenv import load_dotenv
 # import debugpy
 
@@ -25,7 +25,7 @@ from funsearch import config, core, sandbox, sampler, programs_database, code_ma
 
 LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
 logging.basicConfig(level=LOGLEVEL)
-# mp.set_start_method('spawn', force=True)
+mp.set_start_method('spawn', force=True)
 
 def get_all_subclasses(cls):
   all_subclasses = []
@@ -70,9 +70,9 @@ def main(ctx):
 @click.argument("spec_file", type=click.File("r"))
 @click.argument('inputs')
 # @click.option('--model_name', default="gpt-3.5-turbo-instruct", help='LLM model')
-# @click.option('--model_name', default="bigcode/starcoder2-15b-instruct-v0.1", help='LLM model')
+@click.option('--model_name', default="bigcode/starcoder2-15b-instruct-v0.1", help='LLM model')
 # @click.option('--model_name', default="starcoder2:3b", help='LLM model')
-@click.option('--model_name', default="starcoder-carlo", help='LLM model')
+# @click.option('--model_name', default="starcoder-carlo", help='LLM model')
 @click.option('--output_path', default="./data/", type=click.Path(file_okay=False), help='path for logs and data')
 @click.option('--load_backup', default=None, type=click.File("rb"), help='Use existing program database')
 @click.option('--iterations', default=-1, type=click.INT, help='Max iterations per sampler')
@@ -139,24 +139,24 @@ def run(spec_file, inputs, model_name, output_path, load_backup, iterations, sam
                                                    "See e.g. the error files under sandbox data.")
 
   ### ORIGINAL #########################################
-  model = llm.get_model(model_name)
-  lm = sampler.LLM(samples_per_prompt=2, model=model, log_path=log_path)
-  samplers = [sampler.Sampler(database, evaluators, lm)
-              for _ in range(samplers)]
+  # model = llm.get_model(model_name)
+  # lm = sampler.LLM(samples_per_prompt=2, model=model, log_path=log_path)
+  # samplers = [sampler.Sampler(database, evaluators, lm)
+  #             for _ in range(samplers)]
 
-  core.run(samplers, database, iterations)
+  # core.run(samplers, database, iterations)
   ######################################################
 
   ### PARALLELIZED (CUSTOM) ############################
-  # quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-  # samplers = [custom_sampler.CustomSampler(rank=i, 
-  #                                          model_name=model_name, 
-  #                                          database=database, 
-  #                                          evaluators=evaluators, 
-  #                                          samples_per_prompt=2, 
-  #                                          quantization_config=quantization_config,
-  #                                          log_path=log_path) for i in range(samplers)]
-  # core.run_parallel(samplers, database, iterations)
+  quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+  samplers = [custom_sampler.CustomSampler(rank=i, 
+                                           model_name=model_name, 
+                                           database=database, 
+                                           evaluators=evaluators, 
+                                           samples_per_prompt=2, 
+                                           quantization_config=quantization_config,
+                                           log_path=log_path) for i in range(samplers)]
+  core.run_parallel(samplers, database, iterations)
   ######################################################
 
 
