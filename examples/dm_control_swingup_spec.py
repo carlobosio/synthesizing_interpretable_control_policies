@@ -1,7 +1,7 @@
-"""Finds a heuristic policy for the pendulum swingup task.
+"""Find a heuristic policy for the pendulum swingup task.
 
 On every iteration, improve heuristic_v1 over the heuristic_vX methods from previous iterations.
-Make only small changes. Try to make the code short. 
+Make only small changes. Try to make the code short. Only add the missing function body, do not return additional code.
 """
 
 import numpy as np
