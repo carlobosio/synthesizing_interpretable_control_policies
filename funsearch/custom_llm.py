@@ -71,17 +71,18 @@ class CustomLLM(torch.nn.Module):
 if __name__ == "__main__":
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
     llm = CustomLLM(samples_per_prompt=1, device="cuda:1", quantization_config=quantization_config)
-    # prompt = ("You are an exceptionally intelligent coding assistant" 
-    #           "that consistently delivers accurate and reliable responses to user instructions.\n\n"
-    #           "### Instruction Complete the function.\n"
-    #           "def fibonacci(n):\n"
+    prompt = ("You are an exceptionally intelligent coding assistant" 
+              "that consistently delivers accurate and reliable responses to user instructions.\n\n"
+              "### Instruction\n" 
+              "Complete the function. Do not provide any additional code.\n"
+              "def fibonacci(n):\n"
+              "# fill here\n"
+            #   "return out\n"
+              "### Response\n")
+    # prompt = ("### Instruction\n def sum_first_n(n):\n"
     #           "# fill here\n"
     #           "return out\n"
     #           "### Response")
-    prompt = ("### Instruction\n def sum_first_n(n):\n"
-              "# fill here\n"
-              "return out\n"
-              "### Response")
              
     samples = llm.draw_samples(prompt=prompt)
     for i, sample in enumerate(samples, 1):
