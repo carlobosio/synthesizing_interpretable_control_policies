@@ -16,7 +16,7 @@ COPY funsearch ./funsearch
 RUN pip install 'accelerate>=0.26.0'
 RUN pip install -U bitsandbytes
 RUN pip install --no-deps . 
-RUN llm install llm-ollama
+# RUN llm install llm-ollama
 RUN pip install dm_control
 
 # if running the container
