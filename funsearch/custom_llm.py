@@ -29,13 +29,17 @@ class CustomLLM(torch.nn.Module):
         self.tokenizer.pad_token = "[PAD]" 
         self.tokenizer.pad_token_id = self.tokenizer.convert_tokens_to_ids("[PAD]")
         # self.tokenizer.pad_token = self.tokenizer.eos_token
+        self.system_prompt = ("You are an exceptionally intelligent coding assistant" 
+                            "that consistently delivers accurate and reliable responses to user instructions.\n"
+                            "### Instruction\n\n")
+        self.response_prompt = "\n### Response\n"
         
     def forward(self, input_ids):
         return self.model(input_ids)
     
     def draw_samples(self, prompt: str, max_length=400):
         # print("Model is on device:", self.model.device)
-        # prompt = "You are an exceptionally intelligent coding assistant that consistently delivers accurate and reliable responses to user instructions." + prompt
+        prompt = self.system_prompt + prompt + self.response_prompt
         input_ids = self.tokenizer.encode(prompt, return_tensors='pt', padding=True)
         input_ids = input_ids.to(self.model.device)
         
@@ -71,18 +75,18 @@ class CustomLLM(torch.nn.Module):
 if __name__ == "__main__":
     quantization_config = BitsAndBytesConfig(load_in_8bit=True)
     llm = CustomLLM(samples_per_prompt=1, device="cuda:1", quantization_config=quantization_config)
-    prompt = ("You are an exceptionally intelligent coding assistant" 
-              "that consistently delivers accurate and reliable responses to user instructions.\n\n"
-              "### Instruction\n" 
-              "Complete the function. Do not provide any additional code.\n"
-              "def fibonacci(n):\n"
-              "# fill here\n"
-            #   "return out\n"
-              "### Response\n")
+    # prompt = ("You are an exceptionally intelligent coding assistant" 
+    #           "that consistently delivers accurate and reliable responses to user instructions.\n\n"
+    #           "### Instruction\n" 
+    #           "Complete the function. Do not provide any additional code.\n"
+    #           "def fibonacci(n):\n"
+    #           "# fill here\n"
+    #           "### Response\n")
     # prompt = ("### Instruction\n def sum_first_n(n):\n"
     #           "# fill here\n"
     #           "return out\n"
     #           "### Response")
+    prompt = "def fibonacci(n):\n"
              
     samples = llm.draw_samples(prompt=prompt)
     for i, sample in enumerate(samples, 1):
