@@ -12,8 +12,8 @@ class ProgramWrapper:
         return [float(x) for x in re.findall(FLOAT, self.program)]
     
     def sub_floats(self, numbers: list[float]) -> str:
-        """Substitutes all floats in a string with a replacement."""
-        replacement = [str(x) for x in range(len(numbers))]
+        """Substitutes all floats in a string with the floats contained in the list "numbers"."""
+        replacement = [str(x) for x in numbers]
         replacement_iter = iter(replacement)
 
         def replace_with_next(match: re.Match) -> str:
